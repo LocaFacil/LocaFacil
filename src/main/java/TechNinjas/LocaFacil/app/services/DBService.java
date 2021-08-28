@@ -1,9 +1,13 @@
 package TechNinjas.LocaFacil.app.services;
 
+import TechNinjas.LocaFacil.app.models.Usuario;
+import TechNinjas.LocaFacil.app.models.enums.Perfil;
 import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Arrays;
 
 @Service
 public class DBService {
@@ -15,11 +19,11 @@ public class DBService {
     private BCryptPasswordEncoder encoder;
 
     public void instanciaDB() {
-//        Usuario u1 = new Usuario(null, "Admin Teste", "admin@mail.com", encoder.encode("1313"));
-//        u1.addPerfil(Perfil.ADMIN);
-//
-//        Usuario u2 = new Usuario(null, "Vinicius Belmont", "darkvader@gmail.com", encoder.encode("vini123"));
-//
-//        usuarioRepository.saveAll(Arrays.asList(u1, u2));
+        Usuario u1 = new Usuario(null, "Admin Teste", "admin@mail.com", encoder.encode("1313"));
+        u1.addPerfil(Perfil.ADMIN);
+
+        Usuario u2 = new Usuario(null, "Vinicius Belmont", "darkvader@gmail.com", encoder.encode("vini123"));
+
+        usuarioRepository.saveAll(Arrays.asList(u1, u2));
     }
 }

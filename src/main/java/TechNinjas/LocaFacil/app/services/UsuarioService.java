@@ -62,14 +62,14 @@ public class UsuarioService {
     }
 
     public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
-        Optional<Usuario> optionalUsuario = repository.findByEmail(email);
-        Usuario user = optionalUsuario.get();
-        if (user != null) {
-            user.setResetPasswordToken(token);
-            repository.save(user);
-        } else {
-            throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
-        }
+        //Optional<Usuario> optionalUsuario = repository.findByEmail(email);
+        //Usuario user = optionalUsuario.get();
+        // (user != null) {
+            //user.setResetPasswordToken(token);
+            //repository.save(user);
+        //} else {
+            //throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
+        //}
     }
 
     public UsuarioRepository getByResetPasswordToken(String token) {

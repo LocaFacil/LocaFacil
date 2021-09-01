@@ -12,4 +12,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Transactional(readOnly = true)
     Optional<Usuario> findByEmail(String email);
+
+    //public Usuario findByUserEmail(String email);
+    UsuarioRepository findByResetPasswordToken(String token);
 }

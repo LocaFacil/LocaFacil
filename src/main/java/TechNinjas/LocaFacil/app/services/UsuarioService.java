@@ -5,6 +5,7 @@ import TechNinjas.LocaFacil.app.models.enums.Perfil;
 import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
 import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
+import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,30 @@ public class UsuarioService {
     public void delete(Integer id) {
         findById(id);
         repository.deleteById(id);
+    }
+
+    public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
+        Optional<Usuario> optionalUsuario = repository.findByEmail(email);
+        Usuario user = optionalUsuario.get();
+        if (user != null) {
+            user.setResetPasswordToken(token);
+            repository.save(user);
+        } else {
+            throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
+        }
+    }
+
+    public UsuarioRepository getByResetPasswordToken(String token) {
+        return repository.findByResetPasswordToken(token);
+    }
+
+    public void updatePassword(Usuario usuario, String newPassword) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        usuario.setSenha(encodedPassword);
+
+        usuario.setResetPasswordToken(null);
+        repository.save(usuario);
     }
 }
 

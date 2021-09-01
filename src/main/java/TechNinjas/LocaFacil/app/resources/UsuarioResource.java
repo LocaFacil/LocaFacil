@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Api("API SISTEMA LOGIN")
@@ -93,14 +92,14 @@ public class UsuarioResource {
         return ResponseEntity.noContent().build();
     }
 
-    @ApiOperation(value = "Reset Password")
-    @GetMapping("/resetPassword")
-    public String resetPassword(@RequestParam String email) {
-        Optional<Usuario> optUser = repository.findByEmail(email);
-        if (optUser.isEmpty()){
-            return "Email invalido ou em branco";
-        }
-        Usuario user = optUser.get();
-        return  "Senha solicitada: " + user.getSenha();
-    }
+//    @ApiOperation(value = "Reset Password")
+//    @GetMapping("/resetPassword")
+//    public String resetPassword(@RequestParam String email) {
+//        Optional<Usuario> optUser = repository.findByEmail(email);
+//        if (optUser.isEmpty()){
+//            return "Email invalido ou em branco";
+//        }
+//        Usuario user = optUser.get();
+//        return  "Senha solicitada: " + user.getSenha();
+//    }
 }

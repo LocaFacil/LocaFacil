@@ -42,6 +42,9 @@ public class Usuario implements Serializable {
     @CollectionTable(name = "PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
     //Ver depois
     public Usuario() {
         addPerfil(Perfil.USER);
@@ -72,5 +75,13 @@ public class Usuario implements Serializable {
 
     public void addPerfil(Perfil perfil) {
         perfis.add(perfil.getCod());
+    }
+
+    public void setResetPasswordToken(String resetPasswordToken) {
+        this.resetPasswordToken = resetPasswordToken;
+    }
+
+    public String getResetPasswordToken() {
+        return resetPasswordToken;
     }
 }

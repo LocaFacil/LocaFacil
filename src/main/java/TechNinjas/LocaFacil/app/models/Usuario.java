@@ -2,6 +2,7 @@ package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.UsuarioDTO;
 import TechNinjas.LocaFacil.app.models.enums.Perfil;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
+@AllArgsConstructor
 @Entity
 public class Usuario implements Serializable {
     private static final Long SerialVersionUID = 1L;

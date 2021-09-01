@@ -5,9 +5,7 @@ import TechNinjas.LocaFacil.app.services.UsuarioService;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,16 +28,16 @@ public class PasswordResource {
     @Autowired
     private JavaMailSender mailSender;
 
-    @Bean
-    public JavaMailSenderImpl mailSender() {
-        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-
-        javaMailSender.setProtocol("SMTP");
-        javaMailSender.setHost("127.0.0.1");
-        javaMailSender.setPort(25);
-
-        return javaMailSender;
-    }
+//    @Bean
+//    public JavaMailSenderImpl mailSender() {
+//        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+//
+//        javaMailSender.setProtocol("SMTP");
+//        javaMailSender.setHost("127.0.0.1");
+//        javaMailSender.setPort(25);
+//
+//        return javaMailSender;
+//    }
 
     @GetMapping("/defpassword")
     public String showForgotPasswordForm(Model model){
@@ -54,7 +52,7 @@ public class PasswordResource {
 
         try{
             customerService.updateResetPasswordToken(token, email);
-            String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
+            String resetPasswordLink = Utility.getSiteURL(request) + "/defpassword?token=" + token;
             sendEmail(email, resetPasswordLink);
             model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
         } catch (CustomerNotFoundException ex) {
@@ -62,7 +60,6 @@ public class PasswordResource {
         } catch (UnsupportedEncodingException | MessagingException e) {
             model.addAttribute("error", "Error while sending email");
         }
-
         return "forgot_password_form";
     }
 
@@ -70,7 +67,7 @@ public class PasswordResource {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);
 
-        helper.setFrom("contact@shopme.com", "LocaFacil Suporte");
+        helper.setFrom("locafacilcacambas@gmail.com", "LocaFacil Suporte");
         helper.setTo(email);
 
         String subject = "Aqui está o link para resetar a senha";

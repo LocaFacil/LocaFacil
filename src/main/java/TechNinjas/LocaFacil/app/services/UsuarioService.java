@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -62,14 +63,15 @@ public class UsuarioService {
     }
 
     public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
-        //Optional<Usuario> optionalUsuario = repository.findByEmail(email);
-        //Usuario user = optionalUsuario.get();
-        // (user != null) {
-            //user.setResetPasswordToken(token);
-            //repository.save(user);
-        //} else {
-            //throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
-        //}
+        Optional<Usuario> obj = repository.findByEmail(email);
+        if (obj.isPresent()) {
+            obj.get().setResetPasswordToken(token);
+            repository.save(new Usuario(obj.get().getIduser(), obj.get().getNome(), obj.get().getEmail(),
+                    obj.get().getSenha(), obj.get().getPerfis().stream().map(Perfil::getCod).collect(Collectors.toSet()),
+                    obj.get().getResetPasswordToken()));
+        } else {
+            throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
+        }
     }
 
     public UsuarioRepository getByResetPasswordToken(String token) {

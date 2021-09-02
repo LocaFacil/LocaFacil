@@ -23,10 +23,12 @@ import java.util.Optional;
 public class UsuarioServiceTest {
 
     private static final Integer ID = 1;
-    private static final String NOME = "Vinicius Admin";
+    private static final String NAME = "Vinicius Admin";
     //private static final String CPF = "488.484.130-13";
+    //private static final String PHONE = "";
     private static final String EMAIL = "admin@mail.com";
-    private static final String SENHA = "1313";
+    private static final String PASSWORD = "1313";
+    //private static final boolean TERMSUSE = true;
     private Usuario usuario;
 
     @InjectMocks
@@ -38,7 +40,7 @@ public class UsuarioServiceTest {
     @Before
     public void init() {
         MockitoAnnotations.openMocks(this);
-        usuario = new Usuario(ID, NOME, EMAIL, SENHA);
+        usuario = new Usuario(ID, NAME, EMAIL, PASSWORD);
     }
 
     @Test

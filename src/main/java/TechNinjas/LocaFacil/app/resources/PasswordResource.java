@@ -28,17 +28,6 @@ public class PasswordResource {
     @Autowired
     private JavaMailSender mailSender;
 
-//    @Bean
-//    public JavaMailSenderImpl mailSender() {
-//        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
-//
-//        javaMailSender.setProtocol("SMTP");
-//        javaMailSender.setHost("127.0.0.1");
-//        javaMailSender.setPort(25);
-//
-//        return javaMailSender;
-//    }
-
     @GetMapping("/defpassword")
     public String showForgotPasswordForm(Model model){
         model.addAttribute("pageTitle","Forgot Password");
@@ -54,13 +43,13 @@ public class PasswordResource {
             customerService.updateResetPasswordToken(token, email);
             String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
             sendEmail(email, resetPasswordLink);
-            model.addAttribute("message", "We have sent a reset password link to your email. Please check.");
+            model.addAttribute("message", "Enviamos um link de redefinição de senha para o seu e-mail. Por favor, verifique.");
         } catch (CustomerNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
         } catch (UnsupportedEncodingException | MessagingException e) {
-            model.addAttribute("error", "Error while sending email");
+            model.addAttribute("error", "Erro ao enviar e-mail");
         }
-        return "forgot_password_form";
+        return "Ok";
     }
 
     private void sendEmail(String email, String resetPasswordLink) throws MessagingException, UnsupportedEncodingException {

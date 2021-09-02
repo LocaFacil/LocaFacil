@@ -45,13 +45,13 @@ public class UsuarioService {
     }
 
     public Usuario create(Usuario obj) {
-        obj.setIduser(null);
-        obj.setSenha(encoder.encode(obj.getSenha()));
+        obj.setId(null);
+        obj.setPassword(encoder.encode(obj.getPassword()));
         return repository.save(obj);
     }
 
 	public Usuario update(Integer id, @Valid Usuario obj) {
-        obj.setIduser(id);
+        obj.setId(id);
         Usuario usuario = findById(id);
         usuario = mapper.map(obj, Usuario.class);
         return repository.save(usuario);
@@ -66,8 +66,9 @@ public class UsuarioService {
         Optional<Usuario> obj = repository.findByEmail(email);
         if (obj.isPresent()) {
             obj.get().setResetPasswordToken(token);
-            repository.save(new Usuario(obj.get().getIduser(), obj.get().getNome(), obj.get().getEmail(),
-                    obj.get().getSenha(), obj.get().getPerfis().stream().map(Perfil::getCod).collect(Collectors.toSet()),
+            repository.save(new Usuario(obj.get().getId(), obj.get().getName(), obj.get().getEmail(),
+                    /*obj.get().getCpf(), obj.get().getPhone(),*/ obj.get().getPassword(),
+                    obj.get().getPerfis().stream().map(Perfil::getCod).collect(Collectors.toSet()),
                     obj.get().getResetPasswordToken()));
         } else {
             throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
@@ -81,7 +82,7 @@ public class UsuarioService {
     public void updatePassword(Usuario usuario, String newPassword) {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(newPassword);
-        usuario.setSenha(encodedPassword);
+        usuario.setPassword(encodedPassword);
 
         usuario.setResetPasswordToken(null);
         repository.save(usuario);

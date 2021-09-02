@@ -74,7 +74,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             /* Criando esse objeto para passar para o metodo autenticate do authenticationManager
                verificar se o usuario e senha passados na requisição são válidos */
             UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(), new ArrayList<>());
+                    new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>());
 
             /* Esse é o metodo que verifica se o usuario e senha passados são válidos */
             Authentication authentication = authenticationManager.authenticate(authenticationToken);

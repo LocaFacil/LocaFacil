@@ -20,21 +20,25 @@ import java.util.stream.Collectors;
 public class UsuarioDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
-    private Integer iduser;
-    private String nome;
-    //private String cpf;
+    private Integer id;
+    private String name;
+    private String cpf;
     private String email;
+    private String phone;
+    private Boolean termsUse;
 
     @JsonIgnore
-    private String senha;
+    private String password;
     private Set<Integer> perfis = new HashSet<>();
 
     public UsuarioDTO(Usuario obj) {
-        this.iduser = obj.getIduser();
-        this.nome = obj.getNome();
-        //this.cpf = obj.getCpf();
+        this.id = obj.getId();
+        this.name = obj.getName();
+//        this.cpf = obj.getCpf();
         this.email = obj.getEmail();
-        this.senha = obj.getSenha();
+//        this.phone = obj.getPhone();
+        this.password = obj.getPassword();
+//        this.termsUse = obj.getTermsUse();
         this.perfis = obj.getPerfis().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

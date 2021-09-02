@@ -22,10 +22,12 @@ import java.util.List;
 public class UsuarioResourceTest {
 
     private static final Integer ID = 1;
-    private static final String NOME = "Valdir Cezar";
-    private static final String CPF = "488.484.130-13";
-    private static final String EMAIL = "email@mail.com";
-    private static final String SENHA = "123";
+    private static final String NAME = "";
+    //private static final String CPF = "";
+    private static final String EMAIL = "";
+    //private static final String PHONE = "";
+    private static final String PASSWORD = "";
+    //private static final boolean TERMSUSE = true;
     private Usuario usuario;
 
     @InjectMocks
@@ -37,7 +39,7 @@ public class UsuarioResourceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        usuario = new Usuario(ID, NOME, EMAIL, SENHA);
+        usuario = new Usuario(ID, NAME, EMAIL, PASSWORD);
     }
 
     @Test
@@ -46,7 +48,7 @@ public class UsuarioResourceTest {
         ResponseEntity<UsuarioDTO> response = usuarioResource.findById(ID);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(response.getBody().getIduser(), usuario.getIduser());
+        Assertions.assertEquals(response.getBody().getId(), usuario.getId());
         //Assertions.assertEquals(response.getBody().getCpf(), usuario.getCpf());
         Assertions.assertNotNull(response);
     }
@@ -58,7 +60,7 @@ public class UsuarioResourceTest {
         Mockito.when(usuarioService.findAll()).thenReturn(list);
         ResponseEntity<List<UsuarioDTO>> response = usuarioResource.findAll();
 
-        Assertions.assertEquals(list.get(0).getIduser(), response.getBody().get(0).getIduser());
+        Assertions.assertEquals(list.get(0).getId(), response.getBody().get(0).getId());
         Assertions.assertEquals(UsuarioDTO.class.getSimpleName(), response.getBody().get(0).getClass().getSimpleName());
         Assertions.assertEquals(list.size(), response.getBody().size());
         Assertions.assertEquals(list.stream().count(), response.getBody().stream().count());
@@ -79,9 +81,9 @@ public class UsuarioResourceTest {
 
         Assertions.assertEquals(UsuarioDTO.class, response.getBody().getClass());
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(usuario.getIduser(), response.getBody().getIduser());
+        Assertions.assertEquals(usuario.getId(), response.getBody().getId());
         //Assertions.assertEquals(usuario.getCpf(), response.getBody().getCpf());
-        Assertions.assertEquals(usuario.getSenha(), response.getBody().getSenha());
+        Assertions.assertEquals(usuario.getPassword(), response.getBody().getPassword());
     }
 
     @Test

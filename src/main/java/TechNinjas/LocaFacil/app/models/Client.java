@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.models;
 
-import TechNinjas.LocaFacil.app.models.dtos.UsuarioDTO;
-import TechNinjas.LocaFacil.app.models.enums.Perfil;
+import TechNinjas.LocaFacil.app.models.dtos.ClientDTO;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
-@Entity
-public class Usuario implements Serializable {
+@Entity(name = "Tb_Client")
+public class Client implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
     @Id
@@ -26,12 +26,12 @@ public class Usuario implements Serializable {
     @NotNull(message = "Campo NOME é requerido")
     private String name;
 
-//    @Column(unique = true, name = "cpf")
-//    private String cpf;
-
     @Column(unique = true, nullable = false)
     @NotNull(message = "Campo E-MAIL é requerido")
     private String email;
+
+//    @Column(unique = true)
+//    private String cpf;
 
 //    @Column(length = 11)
 //    private String phone;
@@ -45,40 +45,40 @@ public class Usuario implements Serializable {
 
     //Definição de tipo de usuario
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "PERFIS")
-    private Set<Integer> perfis = new HashSet<>();
+    @CollectionTable(name = "Profiles")
+    private Set<Integer> profiles = new HashSet<>();
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
     //Ver depois
-    public Usuario() {
-        addPerfil(Perfil.USER);
+    public Client() {
+        addProfile(Profile.USER);
     }
 
-    public Usuario(Integer id, String name, String email, String password) {
+    public Client(Integer id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         //Setando o ususario como usuario normal
-        addPerfil(Perfil.USER);
+        addProfile(Profile.USER);
     }
 
-    public Usuario(UsuarioDTO obj) {
+    public Client(ClientDTO obj) {
         this.id = obj.getId();
         this.name = obj.getName();
         this.email = obj.getEmail();
         this.password = obj.getPassword();
-        this.perfis = obj.getPerfis().stream().map(x -> x.getCod()).collect(Collectors.toSet());
+        this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 
-    public Set<Perfil> getPerfis() {
-        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }
 
-    public void addPerfil(Perfil perfil) {
-        perfis.add(perfil.getCod());
+    public void addProfile(Profile profile) {
+        profiles.add(profile.getCod());
     }
 
     public void setResetPasswordToken(String resetPasswordToken) {

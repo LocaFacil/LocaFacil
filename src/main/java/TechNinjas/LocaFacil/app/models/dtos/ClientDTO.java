@@ -1,8 +1,8 @@
 package TechNinjas.LocaFacil.app.models.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import TechNinjas.LocaFacil.app.models.Usuario;
-import TechNinjas.LocaFacil.app.models.enums.Perfil;
+import TechNinjas.LocaFacil.app.models.Client;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UsuarioDTO implements Serializable {
+public class ClientDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
     private Integer id;
@@ -29,9 +29,9 @@ public class UsuarioDTO implements Serializable {
 
     @JsonIgnore
     private String password;
-    private Set<Integer> perfis = new HashSet<>();
+    private Set<Integer> profiles = new HashSet<>();
 
-    public UsuarioDTO(Usuario obj) {
+    public ClientDTO(Client obj) {
         this.id = obj.getId();
         this.name = obj.getName();
 //        this.cpf = obj.getCpf();
@@ -39,15 +39,15 @@ public class UsuarioDTO implements Serializable {
 //        this.phone = obj.getPhone();
         this.password = obj.getPassword();
 //        this.termsUse = obj.getTermsUse();
-        this.perfis = obj.getPerfis().stream().map(x -> x.getCod()).collect(Collectors.toSet());
+        this.profiles = obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 
-    public Set<Perfil> getPerfis() {
-        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }
 
-    public void addPerfil(Perfil perfil) {
-        perfis.add(perfil.getCod());
+    public void addProfile(Profile profile) {
+        profiles.add(profile.getCod());
     }
 }
 

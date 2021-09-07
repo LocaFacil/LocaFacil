@@ -1,6 +1,6 @@
 package TechNinjas.LocaFacil.app.security;
 
-import TechNinjas.LocaFacil.app.models.enums.Perfil;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +24,7 @@ public class UserSS implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSS(Integer id, String email, String password, Set<Perfil> perfis) {
+    public UserSS(Integer id, String email, String password, Set<Profile> perfis) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -66,7 +66,7 @@ public class UserSS implements UserDetails {
         return true;
     }
 
-    public boolean hasRole(Perfil perfil) {
-        return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+    public boolean hasRole(Profile profile) {
+        return getAuthorities().contains(new SimpleGrantedAuthority(profile.getDescricao()));
     }
 }

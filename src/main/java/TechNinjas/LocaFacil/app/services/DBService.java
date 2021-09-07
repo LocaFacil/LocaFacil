@@ -1,29 +1,25 @@
 package TechNinjas.LocaFacil.app.services;
 
-import TechNinjas.LocaFacil.app.models.Usuario;
-import TechNinjas.LocaFacil.app.models.enums.Perfil;
 import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-
 @Service
 public class DBService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioRepository companyRepository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
 
     public void instanciaDB() {
-        Usuario u1 = new Usuario(null, "Admin Teste", "admin@mail.com", encoder.encode("1313"));
-        u1.addPerfil(Perfil.ADMIN);
-
-        Usuario u2 = new Usuario(null, "Vinicius Belmont", "darkvaderlol2017@gmail.com", encoder.encode("vini123"));
-
-        usuarioRepository.saveAll(Arrays.asList(u1, u2));
+//        Client u1 = new Client(null, "Admin Teste", "admin@mail.com", encoder.encode("1313"));
+//        u1.addProfile(Profile.ADMIN);
+//
+//        Client u2 = new Client(null, "Vinicius Belmont","darkvaderlol2017@gmail.com", encoder.encode("vini123"));
+////
+//        companyRepository.saveAll(Arrays.asList(u1));
     }
 }

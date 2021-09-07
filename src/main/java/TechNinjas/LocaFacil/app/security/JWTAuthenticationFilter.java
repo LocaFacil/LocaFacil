@@ -1,6 +1,6 @@
 package TechNinjas.LocaFacil.app.security;
 
-import TechNinjas.LocaFacil.app.models.Usuario;
+import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.dtos.CredenciaisDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +37,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
      */
     private AuthenticationManager authenticationManager;
 
-    private Usuario user;
+    private Client user;
     private JWTUtil jwtUtil;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil) {

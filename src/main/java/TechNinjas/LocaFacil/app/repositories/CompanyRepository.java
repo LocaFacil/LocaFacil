@@ -1,6 +1,6 @@
 package TechNinjas.LocaFacil.app.repositories;
 
-import TechNinjas.LocaFacil.app.models.Client;
+import TechNinjas.LocaFacil.app.models.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,10 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Client, Integer> {
-
+public interface CompanyRepository extends JpaRepository <Company, Integer> {
     @Transactional(readOnly = true)
-    Optional<Client> findByEmail(String email);
-
-    UsuarioRepository findByResetPasswordToken(String token);
+    Optional<Company> findByEmail(String email);
 }

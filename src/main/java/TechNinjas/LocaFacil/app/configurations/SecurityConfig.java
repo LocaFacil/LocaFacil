@@ -40,9 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS = {"/h2-console/**"};
-    private static final String[] PUBLIC_MATCHERS_POST = {"/user/**"};
+    private static final String[] PUBLIC_MATCHERS_POST = {"/user/**","/company/**"};
     private static final String[] AUTH_WHITELIST = {"/v2/api-docs/**","/swagger.json","/swagger-ui.html",
-            "/swagger-resources/**", "/webjars/**","/swagger-ui/*","/favicon.ico","/defpassword"};
+            "/swagger-resources/**", "/webjars/**","/swagger-ui/*","/favicon.ico","/defpassword",
+            "/reset_password?token=", "/reset_password?token=**"};
 
     /**
      * Qualquer endpoint que requeira defesa

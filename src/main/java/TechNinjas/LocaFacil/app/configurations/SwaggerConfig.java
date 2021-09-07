@@ -3,6 +3,7 @@ package TechNinjas.LocaFacil.app.configurations;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
@@ -13,20 +14,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 
-import static springfox.documentation.builders.PathSelectors.regex;
-
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
     public Docket apiProduct(){
         return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.any())
-//                .paths(PathSelectors.any())
-//                .build().apiInfo(metaInfo());
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("TechNinjas.LocaFacil.app")).paths(regex("/user.*"))
+                .apis(RequestHandlerSelectors.basePackage("TechNinjas.LocaFacil.app")).paths(PathSelectors.any())
                 .build().apiInfo(metaInfo());
     }
 

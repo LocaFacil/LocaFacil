@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.resources;
 
-import TechNinjas.LocaFacil.app.models.Usuario;
-import TechNinjas.LocaFacil.app.models.dtos.UsuarioDTO;
+import TechNinjas.LocaFacil.app.models.Client;
+import TechNinjas.LocaFacil.app.models.dtos.ClientDTO;
 import TechNinjas.LocaFacil.app.services.UsuarioService;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UsuarioResourceTest {
+public class ClientResourceTest {
 
     private static final Integer ID = 1;
     private static final String NAME = "";
@@ -28,7 +28,7 @@ public class UsuarioResourceTest {
     //private static final String PHONE = "";
     private static final String PASSWORD = "";
     //private static final boolean TERMSUSE = true;
-    private Usuario usuario;
+    private Client client;
 
     @InjectMocks
     private UsuarioResource usuarioResource;
@@ -39,51 +39,51 @@ public class UsuarioResourceTest {
     @Before
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        usuario = new Usuario(ID, NAME, EMAIL, PASSWORD);
+        client = new Client(ID, NAME, EMAIL, PASSWORD);
     }
 
     @Test
     public void deveRetornarUsuarioDTO_QuandoChamarFindByIdTest() {
-        Mockito.when(usuarioService.findById(Mockito.anyInt())).thenReturn(usuario);
-        ResponseEntity<UsuarioDTO> response = usuarioResource.findById(ID);
+        Mockito.when(usuarioService.findById(Mockito.anyInt())).thenReturn(client);
+        ResponseEntity<ClientDTO> response = usuarioResource.findById(ID);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(response.getBody().getId(), usuario.getId());
+        Assertions.assertEquals(response.getBody().getId(), client.getId());
         //Assertions.assertEquals(response.getBody().getCpf(), usuario.getCpf());
         Assertions.assertNotNull(response);
     }
 
     @Test
     public void deveRetornarListaDeUsuarioDTO_QuandoChamarFindAllTest() {
-        List<Usuario> list = Collections.singletonList(usuario);
+        List<Client> list = Collections.singletonList(client);
 
         Mockito.when(usuarioService.findAll()).thenReturn(list);
-        ResponseEntity<List<UsuarioDTO>> response = usuarioResource.findAll();
+        ResponseEntity<List<ClientDTO>> response = usuarioResource.findAll();
 
         Assertions.assertEquals(list.get(0).getId(), response.getBody().get(0).getId());
-        Assertions.assertEquals(UsuarioDTO.class.getSimpleName(), response.getBody().get(0).getClass().getSimpleName());
+        Assertions.assertEquals(ClientDTO.class.getSimpleName(), response.getBody().get(0).getClass().getSimpleName());
         Assertions.assertEquals(list.size(), response.getBody().size());
         Assertions.assertEquals(list.stream().count(), response.getBody().stream().count());
     }
 
     @Test
     public void deveRetornarStatus201_QuandoChamarCreateTest() {
-        Mockito.when(usuarioService.create(Mockito.any())).thenReturn(usuario);
-        ResponseEntity<UsuarioDTO> response = usuarioResource.create(usuario);
+        Mockito.when(usuarioService.create(Mockito.any())).thenReturn(client);
+        ResponseEntity<ClientDTO> response = usuarioResource.create(client);
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void deveRetornarStatus200_QuandoChamarUpdateTest() {
-        Mockito.when(usuarioService.update(Mockito.any(), Mockito.any())).thenReturn(usuario);
+        Mockito.when(usuarioService.update(Mockito.any(), Mockito.any())).thenReturn(client);
 
-        ResponseEntity<UsuarioDTO> response = usuarioResource.update(ID, usuario);
+        ResponseEntity<ClientDTO> response = usuarioResource.update(ID, client);
 
-        Assertions.assertEquals(UsuarioDTO.class, response.getBody().getClass());
+        Assertions.assertEquals(ClientDTO.class, response.getBody().getClass());
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assertions.assertEquals(usuario.getId(), response.getBody().getId());
+        Assertions.assertEquals(client.getId(), response.getBody().getId());
         //Assertions.assertEquals(usuario.getCpf(), response.getBody().getCpf());
-        Assertions.assertEquals(usuario.getPassword(), response.getBody().getPassword());
+        Assertions.assertEquals(client.getPassword(), response.getBody().getPassword());
     }
 
     @Test

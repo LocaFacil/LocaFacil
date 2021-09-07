@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.services;
 
-import TechNinjas.LocaFacil.app.models.Usuario;
-import TechNinjas.LocaFacil.app.models.enums.Perfil;
+import TechNinjas.LocaFacil.app.models.Client;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
 import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
@@ -28,33 +28,33 @@ public class UsuarioService {
 
     private ModelMapper mapper = new ModelMapper();
 
-    public Usuario findById(Integer id) {
+    public Client findById(Integer id) {
         UserSS userSS = UserService.authenticated();
-        if((userSS == null || !userSS.hasRole(Perfil.ADMIN)) && !id.equals(userSS.getId())) {
+        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
             throw new AuthorizationException("Acesso negado!");
         }
 
-        Optional<Usuario> obj = repository.findById(id);
+        Optional<Client> obj = repository.findById(id);
         return obj.orElseThrow(() ->
-                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getSimpleName())
+                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
         );
     }
 
-    public List<Usuario> findAll() {
+    public List<Client> findAll() {
         return repository.findAll();
     }
 
-    public Usuario create(Usuario obj) {
+    public Client create(Client obj) {
         obj.setId(null);
         obj.setPassword(encoder.encode(obj.getPassword()));
         return repository.save(obj);
     }
 
-	public Usuario update(Integer id, @Valid Usuario obj) {
+	public Client update(Integer id, @Valid Client obj) {
         obj.setId(id);
-        Usuario usuario = findById(id);
-        usuario = mapper.map(obj, Usuario.class);
-        return repository.save(usuario);
+        Client client = findById(id);
+        client = mapper.map(obj, Client.class);
+        return repository.save(client);
 	}
 
     public void delete(Integer id) {
@@ -62,31 +62,31 @@ public class UsuarioService {
         repository.deleteById(id);
     }
 
-    public void updateResetPasswordToken(String token, String email) throws CustomerNotFoundException {
-        Optional<Usuario> obj = repository.findByEmail(email);
+    public void updateResetPasswordToken(String password, String email) throws CustomerNotFoundException {
+        Optional<Client> obj = repository.findByEmail(email);
         if (obj.isPresent()) {
-            obj.get().setResetPasswordToken(token);
-            repository.save(new Usuario(obj.get().getId(), obj.get().getName(), obj.get().getEmail(),
+            obj.get().setPassword(password);
+            repository.save(new Client(obj.get().getId(), obj.get().getName(), obj.get().getEmail(),
                     /*obj.get().getCpf(), obj.get().getPhone(),*/ obj.get().getPassword(),
-                    obj.get().getPerfis().stream().map(Perfil::getCod).collect(Collectors.toSet()),
+                    obj.get().getProfiles().stream().map(Profile::getCod).collect(Collectors.toSet()),
                     obj.get().getResetPasswordToken()));
         } else {
             throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
         }
     }
 
-    public UsuarioRepository getByResetPasswordToken(String token) {
-        return repository.findByResetPasswordToken(token);
-    }
-
-    public void updatePassword(Usuario usuario, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        usuario.setPassword(encodedPassword);
-
-        usuario.setResetPasswordToken(null);
-        repository.save(usuario);
-    }
+//    public UsuarioRepository getByResetPasswordToken(String token) {
+//        return repository.findByResetPasswordToken(token);
+//    }
+//
+//    public void updatePassword(Client client, String newPassword) {
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String encodedPassword = passwordEncoder.encode(newPassword);
+//        client.setPassword(encodedPassword);
+//
+//        client.setResetPasswordToken(null);
+//        repository.save(client);
+//    }
 }
 
 

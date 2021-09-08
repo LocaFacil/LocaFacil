@@ -105,10 +105,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization", "Bearer " + token);
         response.getWriter().write("token: ");
         response.getWriter().write(token);
-        response.getWriter().write("/n");
+        //response.getWriter().write("/n");
 
 
-        response.getWriter().write("typeuser: ");
+        //response.getWriter().write("typeuser: ");
         //response.getWriter().write(String.valueOf(perfis));
     }
 

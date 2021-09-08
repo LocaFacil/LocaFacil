@@ -1,23 +1,25 @@
 package TechNinjas.LocaFacil.app.resources;
 
+import TechNinjas.LocaFacil.app.models.dtos.EmailDTO;
 import TechNinjas.LocaFacil.app.services.UsuarioService;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Api("PARTE DE RECUPERAÇÃO DE SENHA")
@@ -39,28 +41,30 @@ public class PasswordResource {
 
     @ApiOperation(value = "Faz a verificação do email, caso existe um valido, ele manda então um email ao destinatario," +
             "para resetar a senha")
-    @PostMapping("/defpassword")
-    public String processForgotPasswordForm(HttpServletRequest request, Model model){
-        String email = request.getParameter("email");
+    @PostMapping(value = "/defpassword", consumes = "application/json")
+    public ResponseEntity<Object> processForgotPasswordForm(HttpServletRequest request, HttpServletResponse response,
+                                                            Model model,@RequestBody EmailDTO email){
+        //String email = request.getParameter("email");
         //String token = RandomString.make(30);
+        String email2 = email.getEmail();
         String password = RandomString.make(15);
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(password);
 
         try{
-            customerService.updateResetPasswordToken(encodedPassword, email);
+            customerService.updateResetPasswordToken(encodedPassword, email2);
             String pass = password;
             //String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
 //            sendEmail(email, resetPasswordLink);
-            sendEmail(email, pass);
-            model.addAttribute("message", "Enviamos um link de redefinição de senha para o seu e-mail. Por favor, verifique.");
+            sendEmail(email2, pass);
+            response.getWriter().write("Enviamos um link de redefinição de senha para o seu e-mail. Por favor, verifique.");
         } catch (CustomerNotFoundException ex) {
             model.addAttribute("error", ex.getMessage());
-        } catch (UnsupportedEncodingException | MessagingException e) {
+        } catch (MessagingException | IOException e) {
             model.addAttribute("error", "Erro ao enviar e-mail");
         }
-        return "Ok";
+        return ResponseEntity.status(HttpStatus.FOUND).build();
     }
 
     private void sendEmail(String email, String pass) throws MessagingException, UnsupportedEncodingException {

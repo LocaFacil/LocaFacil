@@ -43,7 +43,7 @@ public class PasswordResource {
             "para resetar a senha")
     @PostMapping(value = "/defpassword", consumes = "application/json")
     public ResponseEntity<Object> processForgotPasswordForm(HttpServletRequest request, HttpServletResponse response,
-                                                            Model model,@RequestBody EmailDTO email){
+                                                            Model model,@RequestBody EmailDTO email) throws IOException {
         //String email = request.getParameter("email");
         //String token = RandomString.make(30);
         String email2 = email.getEmail();
@@ -58,13 +58,15 @@ public class PasswordResource {
             //String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
 //            sendEmail(email, resetPasswordLink);
             sendEmail(email2, pass);
-            response.getWriter().write("Enviamos um link de redefinição de senha para o seu e-mail. Por favor, verifique.");
+            response.getWriter().write("Enviamos um link de redefinicao de senha para o seu e-mail. Por favor, verifique.");
+            return ResponseEntity.status(HttpStatus.FOUND).build();
         } catch (CustomerNotFoundException ex) {
-            model.addAttribute("error", ex.getMessage());
+            response.getWriter().write(ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (MessagingException | IOException e) {
-            model.addAttribute("error", "Erro ao enviar e-mail");
+            response.getWriter().write("Erro ao enviar e-mail");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        return ResponseEntity.status(HttpStatus.FOUND).build();
     }
 
     private void sendEmail(String email, String pass) throws MessagingException, UnsupportedEncodingException {

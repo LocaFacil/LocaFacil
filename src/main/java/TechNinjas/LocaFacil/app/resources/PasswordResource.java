@@ -58,8 +58,7 @@ public class PasswordResource {
             //String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
 //            sendEmail(email, resetPasswordLink);
             sendEmail(email2, pass);
-            response.getWriter().write("Enviamos um link de redefinicao de senha para o seu e-mail. Por favor, verifique.");
-            return ResponseEntity.status(HttpStatus.FOUND).build();
+            return ResponseEntity.ok().build();
         } catch (CustomerNotFoundException ex) {
             response.getWriter().write(ex.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

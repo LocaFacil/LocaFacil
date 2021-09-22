@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.List;
 
 @Data
 @Entity(name = "Tb_Request")
@@ -16,11 +15,13 @@ public class Request implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idrequest;
 
-    private Date senddate;
+    private Date dataInicio;
 
-    @OneToMany
-    private List<Client> client;
+    private Date dataFim;
 
-    @OneToMany
-    private List<Company> company;
+    @OneToOne
+    private Client client;
+
+    @OneToOne
+    private Dumpster dumpster;
 }

@@ -30,11 +30,11 @@ public class Client implements Serializable {
     @NotNull(message = "Campo E-MAIL é requerido")
     private String email;
 
-//    @Column(unique = true)
-//    private String cpf;
+    @Column(unique = true)
+    private String cpf;
 
-//    @Column(length = 11)
-//    private String phone;
+    @Column(length = 11)
+    private String phone;
 
     @Column(nullable = false)
     @NotNull(message = "Campo SENHA é requerido")
@@ -50,6 +50,10 @@ public class Client implements Serializable {
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
+
+    //Locações
+    @OneToOne
+    private Request request;
 
     //Ver depois
     public Client() {
@@ -87,5 +91,9 @@ public class Client implements Serializable {
 
     public String getResetPasswordToken() {
         return resetPasswordToken;
+    }
+
+    public Set<Profile> getIdProfiles() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }
 }

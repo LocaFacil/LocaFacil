@@ -2,7 +2,7 @@ package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.Company;
 import TechNinjas.LocaFacil.app.models.dtos.CompanyDTO;
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.services.CompanyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ public class CompanyResource {
     private CompanyService service;
 
     @Autowired
-    private UsuarioRepository repository;
+    private ClientRepository repository;
 
     /**
      * Cria um novo Usuario
@@ -35,17 +35,5 @@ public class CompanyResource {
     public ResponseEntity<CompanyDTO> create(@Valid @RequestBody Company obj) {
         Company company = service.create(obj);
         return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    /**
-     * Busca um Usuario pelo email
-     * @param email
-     * @return CompanyDTO
-     */
-    @ApiOperation(value = "Encontrar por Email")
-    @GetMapping(value = "/{email}")
-    public ResponseEntity<CompanyDTO> findByEmail(@PathVariable String email) {
-        Company company = service.findByEmail(email);
-        return ResponseEntity.ok().body(new CompanyDTO(company));
     }
 }

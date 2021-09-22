@@ -9,6 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface CompanyRepository extends JpaRepository <Company, Integer> {
+
     @Transactional(readOnly = true)
     Optional<Company> findByEmail(String email);
 }

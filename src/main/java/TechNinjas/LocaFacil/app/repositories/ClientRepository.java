@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Repository
-public interface UsuarioRepository extends JpaRepository<Client, Integer> {
+public interface ClientRepository extends JpaRepository<Client, Integer> {
 
     @Transactional(readOnly = true)
     Optional<Client> findByEmail(String email);
 
-    UsuarioRepository findByResetPasswordToken(String token);
+    ClientRepository findByResetPasswordToken(String token);
 }

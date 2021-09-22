@@ -1,11 +1,15 @@
 package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.CompanyDTO;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity(name = "Tb_Company")
@@ -27,15 +31,23 @@ public class Company implements Serializable {
     @NotNull(message = "Campo SENHA é requerido")
     private String password;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @CollectionTable(name = "Profiles")
-//    private Set<Integer> profiles = new HashSet<>();
+    @OneToOne
+    private Dumpster dumpster;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "Profiles")
+    private Set<Integer> profiles = new HashSet<>();
+
+    public Company() {
+        addProfile(Profile.ADMIN);
+    }
 
     public Company(Integer id, String email, String phone, String password) {
         this.id= id;
         this.email = email;
         this.phone = phone;
         this.password = password;
+        addProfile(Profile.ADMIN);
     }
 
     public Company(CompanyDTO obj) {
@@ -43,5 +55,18 @@ public class Company implements Serializable {
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
         this.password = obj.getPassword();
+        this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
+    }
+
+    public Set<Profile> getProfiles() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addProfile(Profile profile) {
+        profiles.add(profile.getCod());
+    }
+
+    public Set<Profile> getIdProfiles() {
+        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }
 }

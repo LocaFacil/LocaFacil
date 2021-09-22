@@ -2,7 +2,7 @@ package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.dtos.ClientDTO;
-import TechNinjas.LocaFacil.app.services.UsuarioService;
+import TechNinjas.LocaFacil.app.services.ClientService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -31,10 +31,10 @@ public class ClientResourceTest {
     private Client client;
 
     @InjectMocks
-    private UsuarioResource usuarioResource;
+    private ClientResource usuarioResource;
 
     @Mock
-    private UsuarioService usuarioService;
+    private ClientService clientService;
 
     @Before
     public void setUp() {
@@ -44,7 +44,7 @@ public class ClientResourceTest {
 
     @Test
     public void deveRetornarUsuarioDTO_QuandoChamarFindByIdTest() {
-        Mockito.when(usuarioService.findById(Mockito.anyInt())).thenReturn(client);
+        Mockito.when(clientService.findById(Mockito.anyInt())).thenReturn(client);
         ResponseEntity<ClientDTO> response = usuarioResource.findById(ID);
 
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -57,7 +57,7 @@ public class ClientResourceTest {
     public void deveRetornarListaDeUsuarioDTO_QuandoChamarFindAllTest() {
         List<Client> list = Collections.singletonList(client);
 
-        Mockito.when(usuarioService.findAll()).thenReturn(list);
+        Mockito.when(clientService.findAll()).thenReturn(list);
         ResponseEntity<List<ClientDTO>> response = usuarioResource.findAll();
 
         Assertions.assertEquals(list.get(0).getId(), response.getBody().get(0).getId());
@@ -68,14 +68,14 @@ public class ClientResourceTest {
 
     @Test
     public void deveRetornarStatus201_QuandoChamarCreateTest() {
-        Mockito.when(usuarioService.create(Mockito.any())).thenReturn(client);
+        Mockito.when(clientService.create(Mockito.any())).thenReturn(client);
         ResponseEntity<ClientDTO> response = usuarioResource.create(client);
         Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode());
     }
 
     @Test
     public void deveRetornarStatus200_QuandoChamarUpdateTest() {
-        Mockito.when(usuarioService.update(Mockito.any(), Mockito.any())).thenReturn(client);
+        Mockito.when(clientService.update(Mockito.any(), Mockito.any())).thenReturn(client);
 
         ResponseEntity<ClientDTO> response = usuarioResource.update(ID, client);
 
@@ -88,7 +88,7 @@ public class ClientResourceTest {
 
     @Test
     public void deveRetornarStatus204_QuandoChamarDeleteTest() {
-        Mockito.doNothing().when(usuarioService).delete(Mockito.any());
+        Mockito.doNothing().when(clientService).delete(Mockito.any());
         ResponseEntity<Void> response = usuarioResource.delete(ID);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }

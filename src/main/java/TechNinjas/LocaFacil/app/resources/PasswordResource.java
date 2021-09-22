@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.dtos.EmailDTO;
-import TechNinjas.LocaFacil.app.services.UsuarioService;
+import TechNinjas.LocaFacil.app.services.ClientService;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
 public class PasswordResource {
 
     @Autowired
-    private UsuarioService customerService;
+    private ClientService customerService;
 
     @Autowired
     private JavaMailSender mailSender;

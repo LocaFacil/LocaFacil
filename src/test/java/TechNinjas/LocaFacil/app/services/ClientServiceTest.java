@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,10 +32,10 @@ public class ClientServiceTest {
     private Client client;
 
     @InjectMocks
-    private UsuarioService usuarioService;
+    private ClientService clientService;
 
     @Mock
-    private UsuarioRepository usuarioRepository;
+    private ClientRepository clientRepository;
 
     @Before
     public void init() {
@@ -45,8 +45,8 @@ public class ClientServiceTest {
 
     @Test
     public void deveRetornarUsuario_QuandoChamarFindByIdComIdValidoTest() {
-        Mockito.when(usuarioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(client));
-        Client response = usuarioService.findById(ID);
+        Mockito.when(clientRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(client));
+        Client response = clientService.findById(ID);
 
         Assertions.assertEquals(client.toString(), response.toString());
         Assertions.assertNotNull(response);
@@ -55,7 +55,7 @@ public class ClientServiceTest {
     @Test
     public void deveRetornarErro_QuandoChamarFindByIdComIdInvalidoTest() {
         try {
-            Mockito.when(usuarioService.findById(Mockito.anyInt()))
+            Mockito.when(clientService.findById(Mockito.anyInt()))
                     .thenThrow(new ObjectNotFoundException(
                             "Objeto não encontrado! Id: " + ID + ", Tipo: " + Client.class.getSimpleName()));
         } catch (ObjectNotFoundException ex) {
@@ -66,25 +66,25 @@ public class ClientServiceTest {
     @Test
     public void deveRetornarListaDeUsuario_QuandoChamarFindAllTest() {
         List<Client> list = Collections.singletonList(client);
-        Mockito.when(usuarioRepository.findAll()).thenReturn(list);
+        Mockito.when(clientRepository.findAll()).thenReturn(list);
 
-        List<Client> response = usuarioService.findAll();
+        List<Client> response = clientService.findAll();
         Assertions.assertEquals(response.get(0).toString(), list.get(0).toString());
     }
 
     @Test
     public void deveRetornarUsuario_QuandoCreateForChamadoTest() {
-        Mockito.when(usuarioRepository.save(Mockito.any())).thenReturn(client);
-        Client response = usuarioService.create(client);
+        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
+        Client response = clientService.create(client);
         Assertions.assertEquals(client.toString(), response.toString());
     }
 
     @Test
     public void deveRetornarUsuario_QuandoUpdateForChamadoTest() {
-        Mockito.when(usuarioRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(client));
-        Mockito.when(usuarioRepository.save(Mockito.any())).thenReturn(client);
+        Mockito.when(clientRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(client));
+        Mockito.when(clientRepository.save(Mockito.any())).thenReturn(client);
 
-        Client response = usuarioService.update(1, client);
+        Client response = clientService.update(1, client);
         Assertions.assertEquals(client.toString(), response.toString());
     }
 

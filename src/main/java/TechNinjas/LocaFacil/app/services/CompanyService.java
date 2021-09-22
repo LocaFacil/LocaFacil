@@ -6,12 +6,15 @@ import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
 import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
+import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,25 +28,47 @@ public class CompanyService {
 
     private ModelMapper mapper = new ModelMapper();
 
-    public Company create(Company obj){
+    public Company findById(Integer id) {
+        UserSS userSS = UserService.authenticated();
+        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            throw new AuthorizationException("Acesso negado!");
+        }
+
+        Optional<Company> obj = repository.findById(id);
+        return obj.orElseThrow(() ->
+                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
+        );
+    }
+
+    public List<Company> findAll() {
+        return repository.findAll();
+    }
+
+    public Company create(Company obj) {
         obj.setId(null);
         obj.setPassword(encoder.encode(obj.getPassword()));
         return repository.save(obj);
     }
 
-    public Company validByEmail(String email) {
-        UserSS userSS = UserService.authenticated();
-        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !email.equals(userSS.getId())) {
-            throw new AuthorizationException("Acesso negado!");
-        }
-
-        Optional<Company> obj = repository.findByEmail(email);
-        return obj.orElseThrow(() ->
-                new ObjectNotFoundException("Objeto não encontrado! Id: " + email + ", Tipo: " + Client.class.getSimpleName())
-        );
+    public Company update(Integer id, @Valid Company obj) {
+        obj.setId(id);
+        Company company = findById(id);
+        company = mapper.map(obj, Company.class);
+        return repository.save(company);
     }
 
-    public Company findByEmail(String email){
-        return validByEmail(email);
+    public void delete(Integer id) {
+        findById(id);
+        repository.deleteById(id);
+    }
+
+    public void updateResetPasswordToken(String password, String email) throws CustomerNotFoundException {
+        Optional<Company> obj = repository.findByEmail(email);
+        if (obj.isPresent()) {
+            obj.get().setPassword(password);
+            repository.save(obj.get());
+        } else {
+            throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
+        }
     }
 }

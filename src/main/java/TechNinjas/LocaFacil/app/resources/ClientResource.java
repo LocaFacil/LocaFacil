@@ -2,8 +2,8 @@ package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.dtos.ClientDTO;
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
-import TechNinjas.LocaFacil.app.services.UsuarioService;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
+import TechNinjas.LocaFacil.app.services.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +16,16 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api("API SISTEMA LOGIN")
+@Api("PARTE DE GERENCIAMENTO CLIENTE")
 @RestController
 @RequestMapping(value = "/user")
-public class UsuarioResource {
+public class ClientResource {
 
     @Autowired
-    private UsuarioService service;
+    private ClientService service;
 
     @Autowired
-    private UsuarioRepository repository;
+    private ClientRepository repository;
 
     /**
      * Busca um Usuario pelo id

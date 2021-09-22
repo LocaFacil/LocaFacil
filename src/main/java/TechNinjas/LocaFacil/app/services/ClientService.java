@@ -2,7 +2,7 @@ package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
@@ -15,13 +15,12 @@ import org.springframework.stereotype.Service;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public class ClientService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private ClientRepository repository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;
@@ -66,27 +65,15 @@ public class UsuarioService {
         Optional<Client> obj = repository.findByEmail(email);
         if (obj.isPresent()) {
             obj.get().setPassword(password);
-            repository.save(new Client(obj.get().getId(), obj.get().getName(), obj.get().getEmail(),
-                    /*obj.get().getCpf(), obj.get().getPhone(),*/ obj.get().getPassword(),
-                    obj.get().getProfiles().stream().map(Profile::getCod).collect(Collectors.toSet()),
-                    obj.get().getResetPasswordToken()));
+//            repository.save(new Client(obj.get().getId(), obj.get().getName(), obj.get().getEmail(),
+//                    /*obj.get().getCpf(), obj.get().getPhone(),*/ obj.get().getPassword(),
+//                    obj.get().getProfiles().stream().map(Profile::getCod).collect(Collectors.toSet()),
+//                    obj.get().getResetPasswordToken()));
+            repository.save(obj.get());
         } else {
             throw new CustomerNotFoundException("Não foi possivel encontrar um usuario com esse email: " + email);
         }
     }
-
-//    public UsuarioRepository getByResetPasswordToken(String token) {
-//        return repository.findByResetPasswordToken(token);
-//    }
-//
-//    public void updatePassword(Client client, String newPassword) {
-//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(newPassword);
-//        client.setPassword(encodedPassword);
-//
-//        client.setResetPasswordToken(null);
-//        repository.save(client);
-//    }
 }
 
 

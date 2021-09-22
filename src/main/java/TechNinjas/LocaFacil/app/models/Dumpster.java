@@ -1,12 +1,14 @@
 package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.DumpsterDTO;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
+@AllArgsConstructor
 @Entity(name = "Tb_Dumpster")
 public class Dumpster implements Serializable {
     private static final Long SerialVersionUID = 1L;
@@ -27,7 +29,7 @@ public class Dumpster implements Serializable {
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = true)
 //    @JsonIgnore
-    @ManyToOne
+    @OneToOne
     private Company company;
 
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)

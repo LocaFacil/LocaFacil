@@ -1,6 +1,6 @@
 package TechNinjas.LocaFacil.app.services;
 
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class DBService {
 
     @Autowired
-    private UsuarioRepository companyRepository;
+    private ClientRepository companyRepository;
 
     @Autowired
     private BCryptPasswordEncoder encoder;

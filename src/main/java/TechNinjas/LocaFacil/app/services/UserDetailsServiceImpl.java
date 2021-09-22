@@ -1,7 +1,9 @@
 package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
-import TechNinjas.LocaFacil.app.repositories.UsuarioRepository;
+import TechNinjas.LocaFacil.app.models.Company;
+import TechNinjas.LocaFacil.app.repositories.ClientRepository;
+import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
 import TechNinjas.LocaFacil.app.security.UserSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,20 +20,33 @@ import java.util.Optional;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository repository;
+    private ClientRepository repository;
 
-//    @Autowired
-//    private CompanyRepository companyRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     // Localiza o usuário com base no nome de usuário
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         //Vou ter que fazer separação empresa e cliente
         Optional<Client> user = repository.findByEmail(email);
-        //Optional<Company> userCompany = companyRepository.findByEmail(email);
-        if(!user.isPresent()/*&&!userCompany.isPresent()*/) {
-            throw new UsernameNotFoundException(email);
+        Optional<Company> userCompany = companyRepository.findByEmail(email);
+
+        if (user.isPresent()){
+            //System.out.println(user.get().getIdProfiles());
+            return new UserSS(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getProfiles());
+        }else{
+            if (userCompany.isPresent()){
+                //System.out.println(userCompany.get().getIdProfiles());
+                return new UserSS(userCompany.get().getId(), userCompany.get().getEmail(), userCompany.get().getPassword(), userCompany.get().getProfiles());
+            }else{
+                throw new UsernameNotFoundException(email);
+            }
         }
-        return new UserSS(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getProfiles());
+        //if(!user.isPresent()) {
+            //throw new UsernameNotFoundException(email);
+        //}
+        //return new UserSS(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getProfiles());
+        //System.out.println(user.get().getIdProfiles());
     }
 }

@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -26,13 +27,31 @@ public class DumpsterResource {
 
     @ApiOperation(value = "Cria caçamba")
     @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> create(@Valid @RequestBody Dumpster dumpster) {
         Dumpster dump = service.create(dumpster);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @ApiOperation(value = "Deleta caçamba por id")
+    @ApiOperation(value = "Encontrar a por caçamba por ID")
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<DumpsterDTO> findById(@PathVariable Integer id) {
+        Dumpster dump = service.findById(id);
+        return ResponseEntity.ok().body(new DumpsterDTO(dump));
+    }
+
+    @ApiOperation(value = "Atualiza a caçamba por id")
+    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<DumpsterDTO> update(@PathVariable Integer id, @Valid @RequestBody Dumpster obj) {
+        Dumpster newObj = service.update(id, obj);
+        return ResponseEntity.ok().body(new DumpsterDTO(newObj));
+    }
+
+    @ApiOperation(value = "Deletar a caçamba por id")
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         service.delete(id);
         return ResponseEntity.noContent().build();

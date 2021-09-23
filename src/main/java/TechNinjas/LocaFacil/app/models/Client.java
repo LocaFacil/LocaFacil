@@ -2,6 +2,7 @@ package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.ClientDTO;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -18,24 +19,30 @@ import java.util.stream.Collectors;
 public class Client implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
+    @ApiModelProperty(value = "User ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ApiModelProperty(value = "User Name")
     @Column(nullable = false, length = 50)
     @NotNull(message = "Campo NOME é requerido")
     private String name;
 
+    @ApiModelProperty(value = "User Email")
     @Column(unique = true, nullable = false)
     @NotNull(message = "Campo E-MAIL é requerido")
     private String email;
 
+    @ApiModelProperty(value = "User CPF")
     @Column(unique = true)
     private String cpf;
 
+    @ApiModelProperty(value = "User Phone")
     @Column(length = 11)
     private String phone;
 
+    @ApiModelProperty(value = "User Password")
     @Column(nullable = false)
     @NotNull(message = "Campo SENHA é requerido")
     private String password;
@@ -44,14 +51,16 @@ public class Client implements Serializable {
 //    private Boolean termsUse;
 
     //Definição de tipo de usuario
+    @ApiModelProperty(value = "User Type")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Profiles")
     private Set<Integer> profiles = new HashSet<>();
 
+    @ApiModelProperty(value = "User Reset Password")
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
 
-    //Locações
+    @ApiModelProperty(value = "User Requests")
     @OneToOne
     private Request request;
 

@@ -6,6 +6,8 @@ import TechNinjas.LocaFacil.app.repositories.RequestRepository;
 import TechNinjas.LocaFacil.app.services.RequestService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Api("PARTE DE LOCAÇÃO DE CAÇAMBA")
+@Api("Dumpster Request System")
 @RestController
 @RequestMapping(value = "/request")
 public class RequestResource {
@@ -27,7 +29,12 @@ public class RequestResource {
     @Autowired
     RequestService service;
 
-    @ApiOperation(value = "Cria caçamba")
+    @ApiOperation(value = "Create request")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Created request"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PostMapping("/create")
     public ResponseEntity<RequestDTO> create(@Valid @RequestBody Request request) {
         Request req = service.create(request);

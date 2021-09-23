@@ -6,6 +6,8 @@ import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.services.ClientService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Api("PARTE DE GERENCIAMENTO CLIENTE")
+@Api("Client Management")
 @RestController
 @RequestMapping(value = "/user")
 public class ClientResource {
@@ -32,7 +34,12 @@ public class ClientResource {
      * @param id
      * @return UsuarioDTO
      */
-    @ApiOperation(value = "Encontrar por ID")
+    @ApiOperation(value = "Find user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Finded user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable Integer id) {
         Client client = service.findById(id);
@@ -43,7 +50,12 @@ public class ClientResource {
      * Lista todos os Usuarios do banco
      * @return List<UsuarioDTO>
      */
-    @ApiOperation(value = "Retorna lista de usuarios")
+    @ApiOperation(value = "Return user list")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returned user list"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<ClientDTO>> findAll() {
@@ -58,7 +70,12 @@ public class ClientResource {
      * @return URI
      * @return UsuarioDTO
      */
-    @ApiOperation(value = "Cria um novo usuario")
+    @ApiOperation(value = "Create a new user")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Created the user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PostMapping("/createuser")
     public ResponseEntity<ClientDTO> create(@Valid @RequestBody Client obj) {
         Client client = service.create(obj);
@@ -71,7 +88,12 @@ public class ClientResource {
      * @param obj
      * @return usuarioDTO
      */
-    @ApiOperation(value = "Atualiza usuario")
+    @ApiOperation(value = "Update user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Integer id, @Valid @RequestBody Client obj) {
     	Client newObj = service.update(id, obj);
@@ -83,7 +105,12 @@ public class ClientResource {
       * @param id do Usuario a ser deletado
      * @return noContent
      */
-    @ApiOperation(value = "Deleta usuario por id")
+    @ApiOperation(value = "Delete user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deleted user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {

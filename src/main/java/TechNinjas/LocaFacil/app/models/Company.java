@@ -2,6 +2,7 @@ package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.CompanyDTO;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -16,27 +17,34 @@ import java.util.stream.Collectors;
 public class Company implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
+    @ApiModelProperty(value = "Company ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ApiModelProperty(value = "Company Email")
     @Column(unique = true, nullable = false)
     @NotNull(message = "Campo E-MAIL é requerido")
     private String email;
 
+    @ApiModelProperty(value = "Company Phone")
     @Column(length = 11)
     private String phone;
 
+    @ApiModelProperty(value = "Company Cnpj")
     @Column(length = 14, unique = true, nullable = false)
     private String cnpj;
 
+    @ApiModelProperty(value = "Company Password")
     @Column(nullable = false)
     @NotNull(message = "Campo SENHA é requerido")
     private String password;
 
+    @ApiModelProperty(value = "Dumpster management")
     @OneToOne
     private Dumpster dumpster;
 
+    @ApiModelProperty(value = "Company Type")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Profiles")
     private Set<Integer> profiles = new HashSet<>();

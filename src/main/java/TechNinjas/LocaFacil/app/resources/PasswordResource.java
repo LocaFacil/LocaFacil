@@ -5,6 +5,8 @@ import TechNinjas.LocaFacil.app.services.ClientService;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,6 +43,11 @@ public class PasswordResource {
 
     @ApiOperation(value = "Faz a verificação do email, caso existe um valido, ele manda então um email ao destinatario," +
             "para resetar a senha")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Returned user list"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PostMapping(value = "/defpassword", consumes = "application/json")
     public ResponseEntity<Object> processForgotPasswordForm(HttpServletRequest request, HttpServletResponse response,
                                                             Model model,@RequestBody EmailDTO email) throws IOException {

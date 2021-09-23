@@ -1,6 +1,7 @@
 package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.DumpsterDTO;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,22 +14,28 @@ import java.io.Serializable;
 public class Dumpster implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
+    @ApiModelProperty(value = "Dumpster ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ApiModelProperty(value = "Dumpster Quantity")
     private Integer quantity;
 
+    @ApiModelProperty(value = "Dumpster Size")
     private Integer size;
 
+    @ApiModelProperty(value = "Dumpster Price")
     @Column(name = "price", nullable = false)
     private double price;
 
+    @ApiModelProperty(value = "Dumpster Type")
     private String typetrash;
 
 //    @ManyToOne(fetch = FetchType.LAZY, optional = false)
 //    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = true)
 //    @JsonIgnore
+    @ApiModelProperty(value = "Dumpster-Company")
     @OneToOne
     private Company company;
 

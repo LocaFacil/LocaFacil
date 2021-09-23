@@ -6,6 +6,8 @@ import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
 import TechNinjas.LocaFacil.app.services.DumpsterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
-@Api("SISTEMA REQUISIÇÃO DE CAÇAMBA")
+@Api("Dumpster Management System")
 @RestController
 @RequestMapping(value = "/dumpster")
 public class DumpsterResource {
@@ -25,7 +27,12 @@ public class DumpsterResource {
     @Autowired
     DumpsterService service;
 
-    @ApiOperation(value = "Cria caçamba")
+    @ApiOperation(value = "Create dumpster")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Created dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> create(@Valid @RequestBody Dumpster dumpster) {
@@ -33,7 +40,12 @@ public class DumpsterResource {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @ApiOperation(value = "Encontrar a por caçamba por ID")
+    @ApiOperation(value = "Find dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "found dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @GetMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> findById(@PathVariable Integer id) {
@@ -41,7 +53,12 @@ public class DumpsterResource {
         return ResponseEntity.ok().body(new DumpsterDTO(dump));
     }
 
-    @ApiOperation(value = "Atualiza a caçamba por id")
+    @ApiOperation(value = "Update dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PutMapping(value = "/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> update(@PathVariable Integer id, @Valid @RequestBody Dumpster obj) {
@@ -49,7 +66,12 @@ public class DumpsterResource {
         return ResponseEntity.ok().body(new DumpsterDTO(newObj));
     }
 
-    @ApiOperation(value = "Deletar a caçamba por id")
+    @ApiOperation(value = "Delete dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deleted dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Integer id){

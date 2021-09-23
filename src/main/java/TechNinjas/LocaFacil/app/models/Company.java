@@ -27,7 +27,7 @@ public class Company implements Serializable {
     @Column(length = 11)
     private String phone;
 
-    @Column(length = 14)
+    @Column(length = 14, unique = true, nullable = false)
     private String cnpj;
 
     @Column(nullable = false)

@@ -107,10 +107,11 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //response.getWriter().write(token);
         String typeuser = String.valueOf(((UserSS) authResult.getPrincipal()).getAuthorities());
         //response.getWriter().write("\n");
-        response.getWriter().write("typeuser: ");
-        response.getWriter().write(typeuser);
-
-
+        //response.getWriter().write("typeuser: ");
+        //response.getWriter().write(typeuser);
+        response.setContentType("application/json");
+        response.getWriter().append("typeuser: ");
+        response.getWriter().append(typeuser);
         //response.getWriter().write("typeuser: ");
         //response.getWriter().write(String.valueOf(perfis));
     }

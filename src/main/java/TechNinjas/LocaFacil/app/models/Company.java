@@ -27,6 +27,9 @@ public class Company implements Serializable {
     @Column(length = 11)
     private String phone;
 
+    @Column(length = 14)
+    private String cnpj;
+
     @Column(nullable = false)
     @NotNull(message = "Campo SENHA é requerido")
     private String password;
@@ -42,10 +45,11 @@ public class Company implements Serializable {
         addProfile(Profile.ADMIN);
     }
 
-    public Company(Integer id, String email, String phone, String password) {
+    public Company(Integer id, String email, String phone, String cnpj, String password) {
         this.id= id;
         this.email = email;
         this.phone = phone;
+        this.cnpj = cnpj;
         this.password = password;
         addProfile(Profile.ADMIN);
     }
@@ -54,6 +58,7 @@ public class Company implements Serializable {
         this.id = obj.getId();
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
+        this.cnpj = obj.getCnpj();
         this.password = obj.getPassword();
         this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }

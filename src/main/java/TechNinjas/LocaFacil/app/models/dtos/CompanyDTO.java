@@ -23,6 +23,7 @@ public class CompanyDTO implements Serializable {
     private Integer id;
     private String email;
     private String phone;
+    private String cnpj;
 
     @JsonIgnore
     private String password;
@@ -32,6 +33,7 @@ public class CompanyDTO implements Serializable {
         this.id = obj.getId();
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
+        this.cnpj = obj.getCnpj();
         this.password = obj.getPassword();
         this.profiles = obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }

@@ -22,6 +22,10 @@ public class Company implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ApiModelProperty(value = "Company name")
+    @Column(nullable = false)
+    private String name;
+
     @ApiModelProperty(value = "Company Email")
     @Column(unique = true, nullable = false)
     @NotNull(message = "Campo E-MAIL é requerido")
@@ -53,8 +57,9 @@ public class Company implements Serializable {
         addProfile(Profile.ADMIN);
     }
 
-    public Company(Integer id, String email, String phone, String cnpj, String password) {
+    public Company(Integer id, String name,String email, String phone, String cnpj, String password) {
         this.id= id;
+        this.name = name;
         this.email = email;
         this.phone = phone;
         this.cnpj = cnpj;
@@ -64,6 +69,7 @@ public class Company implements Serializable {
 
     public Company(CompanyDTO obj) {
         this.id = obj.getId();
+        this.name = obj.getName();
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
         this.cnpj = obj.getCnpj();

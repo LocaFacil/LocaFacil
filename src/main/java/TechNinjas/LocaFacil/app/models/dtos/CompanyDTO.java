@@ -21,6 +21,7 @@ public class CompanyDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
     private Integer id;
+    private String name;
     private String email;
     private String phone;
     private String cnpj;
@@ -31,6 +32,7 @@ public class CompanyDTO implements Serializable {
 
     public CompanyDTO(Company obj) {
         this.id = obj.getId();
+        this.name = obj.getName();
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
         this.cnpj = obj.getCnpj();

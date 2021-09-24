@@ -58,7 +58,7 @@ public class SwaggerConfig {
                 new Contact("TechNinjas", "",
                         "viniciusbelmontno@gmail.com"),
                 "Apache License Version 2.0",
-                "https://www.apache.org/licesen.html", new ArrayList<VendorExtension>()
+                "http://www.apache.org/licenses/LICENSE-2.0", new ArrayList<VendorExtension>()
         );
 
         return apiInfo;

@@ -24,6 +24,7 @@ public class Company implements Serializable {
 
     @ApiModelProperty(value = "Company name")
     @Column(nullable = false)
+    @NotNull(message = "Campo NAME é requerido")
     private String name;
 
     @ApiModelProperty(value = "Company Email")

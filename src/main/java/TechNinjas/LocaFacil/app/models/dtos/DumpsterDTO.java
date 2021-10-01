@@ -1,6 +1,5 @@
 package TechNinjas.LocaFacil.app.models.dtos;
 
-import TechNinjas.LocaFacil.app.models.Company;
 import TechNinjas.LocaFacil.app.models.Dumpster;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +20,7 @@ public class DumpsterDTO implements Serializable {
     private Integer size;
     private Double price;
     private String typetrash;
-    private Company company;
+    private Integer company;
 
     public DumpsterDTO(Dumpster obj){
         this.id = obj.getId();

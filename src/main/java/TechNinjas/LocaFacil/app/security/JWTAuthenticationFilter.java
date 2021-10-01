@@ -99,18 +99,15 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                                             Authentication authResult) throws IOException, ServletException {
 
         String username = ((UserSS) authResult.getPrincipal()).getUsername();
-        //Set<Perfil> perfis = user.getPerfis();
         String token = jwtUtil.generateToken(username);
         response.setHeader("access-control-expose-headers", "Authorization");
         response.setHeader("Authorization", "Bearer " + token);
-        //response.getWriter().write("token: ");
-        //response.getWriter().write(token);
         String typeuser = String.valueOf(((UserSS) authResult.getPrincipal()).getAuthorities());
-        //response.getWriter().write("\n");
-        //response.getWriter().write("typeuser: ");
-        //response.getWriter().write(typeuser);
+        Integer id = (((UserSS) authResult.getPrincipal()).getId());
         response.setContentType("application/json");
-        response.getWriter().append("typeuser: ");
+        response.getWriter().append("id: ");
+        response.getWriter().print(id);
+        response.getWriter().append("\n typeuser: ");
         response.getWriter().append(typeuser);
     }
 

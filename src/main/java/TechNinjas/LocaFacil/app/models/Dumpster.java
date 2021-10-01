@@ -2,14 +2,13 @@ package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.DumpsterDTO;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @Entity(name = "Tb_Dumpster")
 public class Dumpster implements Serializable {
     private static final Long SerialVersionUID = 1L;
@@ -32,19 +31,13 @@ public class Dumpster implements Serializable {
     @ApiModelProperty(value = "Dumpster Type")
     private String typetrash;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = true)
-//    @JsonIgnore
     @ApiModelProperty(value = "Dumpster-Company")
-    @OneToOne
-    private Company company;
+    //@OneToOne()
+    private Integer company;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "idrequest", referencedColumnName = "idrequest", insertable = false, updatable = false)
-//    @JsonIgnore
-//    private Request request;
+    private Integer idcompany;
 
-    public Dumpster(Integer id, Integer quantity, Integer size, double price, Company company, String typetrash){
+    public Dumpster(Integer id, Integer quantity, Integer size, double price, String typetrash){
         this.id = id;
         this.quantity = quantity;
         this.size = size;
@@ -60,5 +53,13 @@ public class Dumpster implements Serializable {
         this.price = obj.getPrice();
         this.typetrash = obj.getTypetrash();
         this.company = obj.getCompany();
+    }
+
+    public Integer getIdcompany() {
+        return idcompany;
+    }
+
+    public void setIdcompany(Integer idcompany) {
+        this.idcompany = idcompany;
     }
 }

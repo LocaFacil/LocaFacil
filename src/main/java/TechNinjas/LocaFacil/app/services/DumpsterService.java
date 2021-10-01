@@ -36,7 +36,8 @@ public class DumpsterService {
 
     public Dumpster create(Dumpster dump) {
         dump.setId(null);
-        //dump.setCompany(dump.getCompany());
+        //Setando id empressa
+        dump.setCompany(1);
         return repository.save(dump);
     }
 

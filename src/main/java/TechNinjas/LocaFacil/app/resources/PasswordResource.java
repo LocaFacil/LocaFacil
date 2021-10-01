@@ -2,6 +2,7 @@ package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.dtos.EmailDTO;
 import TechNinjas.LocaFacil.app.services.ClientService;
+import TechNinjas.LocaFacil.app.services.CompanyService;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,9 @@ public class PasswordResource {
     private ClientService customerService;
 
     @Autowired
+    private CompanyService companyService;
+
+    @Autowired
     private JavaMailSender mailSender;
 
     @GetMapping("/defpassword")
@@ -41,18 +45,15 @@ public class PasswordResource {
         return "forgot_password_form";
     }
 
-    @ApiOperation(value = "Faz a verificação do email, caso existe um valido, ele manda então um email ao destinatario," +
-            "para resetar a senha")
+    @ApiOperation(value = "Reset password for user")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returned user list"),
+            @ApiResponse(code = 200, message = "Reseted password"),
             @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @PostMapping(value = "/defpassword", consumes = "application/json")
-    public ResponseEntity<Object> processForgotPasswordForm(HttpServletRequest request, HttpServletResponse response,
+    public ResponseEntity<Object> clientForgotPassword(HttpServletRequest request, HttpServletResponse response,
                                                             Model model,@RequestBody EmailDTO email) throws IOException {
-        //String email = request.getParameter("email");
-        //String token = RandomString.make(30);
         String email2 = email.getEmail();
         String password = RandomString.make(15);
 
@@ -62,15 +63,13 @@ public class PasswordResource {
         try{
             customerService.updateResetPasswordToken(encodedPassword, email2);
             String pass = password;
-            //String resetPasswordLink = Utility.getSiteURL(request) + "/reset_password?token=" + token;
-//            sendEmail(email, resetPasswordLink);
             sendEmail(email2, pass);
             return ResponseEntity.ok().build();
         } catch (CustomerNotFoundException ex) {
             response.getWriter().write(ex.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (MessagingException | IOException e) {
-            response.getWriter().write("Erro ao enviar e-mail");
+            response.getWriter().write("Error sending email");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -81,16 +80,6 @@ public class PasswordResource {
 
         helper.setFrom("locafacilcacambas@gmail.com", "LocaFacil Suporte");
         helper.setTo(email);
-
-//        String subject = "Aqui está o link para resetar a senha";
-//        String content = "<p>Olá,</p>"
-//                + "<p>Você solicitou para redefinir sua senha.</p>"
-//                + "<p>Clique no link abaixo para alterar sua senha:</p>"
-//                + "<p><a href=\"" + resetPasswordLink + "\">Mudar minha senha</a></p>"
-//                + "<br>"
-//                + "<p>Ignore este e-mail se você se lembrar da sua senha, "
-//                + "ou você não fez o pedido.</p>";
-
         String subject = "Aqui está o link para resetar a senha";
         String content = "<p>Olá,</p>"
                 + "<p>Você esqueceu sua senha?</p>"
@@ -104,38 +93,4 @@ public class PasswordResource {
         helper.setText(content, true);
         mailSender.send(message);
     }
-
-//    @ApiOperation(value = "Faz a verificação do token")
-//    @GetMapping("/reset_password")
-//    public String showResetPasswordForm(@Param(value = "token") String token, Model model) {
-//        Client client = (Client) customerService.getByResetPasswordToken(token);
-//        model.addAttribute("token", token);
-//
-//        if (client == null) {
-//            model.addAttribute("message", "Invalid Token");
-//            return "message";
-//        }
-//
-//        return "reset_password_form";
-//    }
-//
-//    @PostMapping("/reset_password")
-//    public String processResetPassword(HttpServletRequest request, Model model) {
-//        String token = request.getParameter("token");
-//        String password = request.getParameter("password");
-//
-//        Client client = (Client) customerService.getByResetPasswordToken(token);
-//        model.addAttribute("title", "Reset your password");
-//
-//        if (client == null) {
-//            model.addAttribute("message", "Invalid Token");
-//            return "message";
-//        } else {
-//            customerService.updatePassword(client, password);
-//
-//            model.addAttribute("message", "You have successfully changed your password.");
-//        }
-//
-//        return "message";
-//    }
 }

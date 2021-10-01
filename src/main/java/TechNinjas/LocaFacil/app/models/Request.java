@@ -27,7 +27,7 @@ public class Request implements Serializable {
     @OneToOne
     private Client client;
 
-    @ApiModelProperty(value = "Request-Dumpster")
-    @OneToOne
-    private Dumpster dumpster;
+    //@ApiModelProperty(value = "Request-Dumpster")
+    //@OneToOne
+    //private Dumpster dumpster;
 }

@@ -36,6 +36,7 @@ public class DumpsterResource {
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> create(@Valid @RequestBody Dumpster dumpster) {
+        //Vou ter que vincular o id da conta empresa conectada com a caçamba criada
         Dumpster dump = service.create(dumpster);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

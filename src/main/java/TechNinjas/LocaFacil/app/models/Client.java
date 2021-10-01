@@ -26,12 +26,12 @@ public class Client implements Serializable {
 
     @ApiModelProperty(value = "User Name")
     @Column(nullable = false, length = 50)
-    @NotNull(message = "Campo NOME é requerido")
+    @NotNull(message = "Name field is required")
     private String name;
 
     @ApiModelProperty(value = "User Email")
     @Column(unique = true, nullable = false)
-    @NotNull(message = "Campo E-MAIL é requerido")
+    @NotNull(message = "Email field is required")
     private String email;
 
     @ApiModelProperty(value = "User CPF")
@@ -44,7 +44,7 @@ public class Client implements Serializable {
 
     @ApiModelProperty(value = "User Password")
     @Column(nullable = false)
-    @NotNull(message = "Campo SENHA é requerido")
+    @NotNull(message = "Password field is required")
     private String password;
 
 //    @Column()
@@ -56,13 +56,13 @@ public class Client implements Serializable {
     @CollectionTable(name = "Profiles")
     private Set<Integer> profiles = new HashSet<>();
 
-    @ApiModelProperty(value = "User Reset Password")
-    @Column(name = "reset_password_token")
-    private String resetPasswordToken;
+    //@ApiModelProperty(value = "User Reset Password")
+    //@Column(name = "reset_password_token")
+    //private String resetPasswordToken;
 
-    @ApiModelProperty(value = "User Requests")
-    @OneToOne
-    private Request request;
+    //@ApiModelProperty(value = "User Requests")
+    //@OneToOne
+    //private Request request;
 
     //Ver depois
     public Client() {
@@ -94,13 +94,13 @@ public class Client implements Serializable {
         profiles.add(profile.getCod());
     }
 
-    public void setResetPasswordToken(String resetPasswordToken) {
-        this.resetPasswordToken = resetPasswordToken;
-    }
+    //public void setResetPasswordToken(String resetPasswordToken) {
+        //this.resetPasswordToken = resetPasswordToken;
+    //}
 
-    public String getResetPasswordToken() {
-        return resetPasswordToken;
-    }
+    //public String getResetPasswordToken() {
+        //return resetPasswordToken;
+    //}
 
     public Set<Profile> getIdProfiles() {
         return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());

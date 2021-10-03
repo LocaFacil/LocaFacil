@@ -2,7 +2,6 @@ package TechNinjas.LocaFacil.app.models.dtos;
 
 import TechNinjas.LocaFacil.app.models.Company;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,7 +25,7 @@ public class CompanyDTO implements Serializable {
     private String phone;
     private String cnpj;
 
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
     private Set<Integer> profiles = new HashSet<>();
 

@@ -2,8 +2,11 @@ package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.Company;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
+import TechNinjas.LocaFacil.app.security.UserSS;
+import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -30,11 +33,11 @@ public class ClientService {
     private ModelMapper mapper = new ModelMapper();
 
     public Client findById(Integer id) {
-        //UserSS userSS = UserService.authenticated();
+        UserSS userSS = UserService.authenticated();
         //Ele ta barrando no userSS, como ele fosse nulo
-//        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-//            throw new AuthorizationException("Acesso negado!");
-//        }
+        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            throw new AuthorizationException("Acesso negado!");
+        }
 
         Optional<Client> obj = repository.findById(id);
         return obj.orElseThrow(() ->
@@ -79,22 +82,6 @@ public class ClientService {
             }
         }
     }
-
-//    public Client findByIdTeste(Integer id) {
-//        UserSS userSS = UserService.authenticated();
-//        //CADE O BAHIANO
-//        if(userSS == null){
-//            System.out.println("userss É NULOOO");
-//        }
-//        if(id == null){
-//            System.out.println("id colocado no postman É NULOOO");
-//        }
-//
-//        Optional<Client> obj = repository.findById(id);
-//        return obj.orElseThrow(() ->
-//                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
-//        );
-//    }
 }
 
 

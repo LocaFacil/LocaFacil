@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -54,5 +55,30 @@ public class CompanyResource {
     public ResponseEntity<CompanyDTO> findById(@PathVariable Integer id) {
         Company company = service.findById(id);
         return ResponseEntity.ok().body(new CompanyDTO(company));
+    }
+
+    @ApiOperation(value = "Update user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<CompanyDTO> update(@PathVariable Integer id, @Valid @RequestBody Company obj) {
+        Company newObj = service.update(id, obj);
+        return ResponseEntity.ok().body(new CompanyDTO(newObj));
+    }
+
+    @ApiOperation(value = "Delete user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Deleted user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

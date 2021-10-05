@@ -30,11 +30,11 @@ public class ClientService {
     private ModelMapper mapper = new ModelMapper();
 
     public Client findById(Integer id) {
-//        UserSS userSS = UserService.authenticated();
-//        //Ele ta barrando no userSS, como ele fosse nulo
-//        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-//            throw new AuthorizationException("Acesso negado!");
-//        }
+        //UserSS userSS = UserService.authenticated();
+        //Ele ta barrando no userSS, como ele fosse nulo
+        //if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            //throw new AuthorizationException("Acesso negado!");
+        //}
 
         Optional<Client> obj = repository.findById(id);
         return obj.orElseThrow(() ->

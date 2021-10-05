@@ -25,10 +25,10 @@ public class CompanyService {
     private ModelMapper mapper = new ModelMapper();
 
     public Company findById(Integer id) {
-//        UserSS userSS = UserService.authenticated();
-//        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-//            throw new AuthorizationException("Acesso negado!");
-//        }
+        //UserSS userSS = UserService.authenticated();
+        //if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            //throw new AuthorizationException("Acesso negado!");
+        //}
         Optional<Company> obj = repository.findById(id);
         return obj.orElseThrow(() ->
                 new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())

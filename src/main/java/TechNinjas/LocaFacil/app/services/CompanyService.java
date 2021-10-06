@@ -2,7 +2,10 @@ package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.Company;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
+import TechNinjas.LocaFacil.app.security.UserSS;
+import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +28,10 @@ public class CompanyService {
     private ModelMapper mapper = new ModelMapper();
 
     public Company findById(Integer id) {
-        //UserSS userSS = UserService.authenticated();
-        //if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-            //throw new AuthorizationException("Acesso negado!");
-        //}
+        UserSS userSS = UserService.authenticated();
+        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            throw new AuthorizationException("Acesso negado!");
+        }
         Optional<Company> obj = repository.findById(id);
         return obj.orElseThrow(() ->
                 new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
@@ -47,7 +50,7 @@ public class CompanyService {
 
     public Company update(Integer id, @Valid Company obj) {
         obj.setId(id);
-        Company company /*= findById(id)*/;
+        Company company = findById(id);
         company = mapper.map(obj, Company.class);
         company.setPassword(encoder.encode(obj.getPassword()));
         return repository.save(company);

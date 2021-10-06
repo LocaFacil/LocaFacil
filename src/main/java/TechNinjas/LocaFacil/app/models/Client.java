@@ -69,7 +69,7 @@ public class Client implements Serializable {
         addProfile(Profile.USER);
     }
 
-    public Client(Integer id, String name, String email, String password) {
+    public Client(Integer id, String name, String email, String password/*,String cpf, String phone*/) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -83,6 +83,8 @@ public class Client implements Serializable {
         this.name = obj.getName();
         this.email = obj.getEmail();
         this.password = obj.getPassword();
+        this.cpf = obj.getCpf();
+        this.phone = obj.getPhone();
         this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

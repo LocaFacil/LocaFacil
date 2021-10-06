@@ -2,8 +2,11 @@ package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.Company;
+import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
+import TechNinjas.LocaFacil.app.security.UserSS;
+import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -30,11 +33,11 @@ public class ClientService {
     private ModelMapper mapper = new ModelMapper();
 
     public Client findById(Integer id) {
-        //UserSS userSS = UserService.authenticated();
+        UserSS userSS = UserService.authenticated();
         //Ele ta barrando no userSS, como ele fosse nulo
-        //if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-            //throw new AuthorizationException("Acesso negado!");
-        //}
+        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
+            throw new AuthorizationException("Acesso negado!");
+        }
 
         Optional<Client> obj = repository.findById(id);
         return obj.orElseThrow(() ->
@@ -54,10 +57,9 @@ public class ClientService {
 
 	public Client update(Integer id, @Valid Client obj) {
         obj.setId(id);
-        Client client/*= findById(id)*/;
+        Client client = findById(id);
         client = mapper.map(obj, Client.class);
         client.setPassword(encoder.encode(obj.getPassword()));
-        client.setCpf(obj.getCpf());
         return repository.save(client);
 	}
 

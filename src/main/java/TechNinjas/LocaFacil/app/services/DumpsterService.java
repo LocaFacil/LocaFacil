@@ -35,9 +35,10 @@ public class DumpsterService {
     }
 
     public Dumpster create(Dumpster dump) {
+        UserSS userSS = UserService.authenticated();
         dump.setId(null);
         //Setando id empressa
-        dump.setCompany(1);
+        dump.setCompany(userSS.getId());
         return repository.save(dump);
     }
 

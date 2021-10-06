@@ -54,9 +54,10 @@ public class ClientService {
 
 	public Client update(Integer id, @Valid Client obj) {
         obj.setId(id);
-        Client client;
+        Client client/*= findById(id)*/;
         client = mapper.map(obj, Client.class);
         client.setPassword(encoder.encode(obj.getPassword()));
+        client.setCpf(obj.getCpf());
         return repository.save(client);
 	}
 

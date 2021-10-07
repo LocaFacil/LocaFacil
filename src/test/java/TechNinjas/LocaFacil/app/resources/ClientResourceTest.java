@@ -38,7 +38,7 @@ public class ClientResourceTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
         client = new Client(ID, NAME, EMAIL, PASSWORD);
     }
 

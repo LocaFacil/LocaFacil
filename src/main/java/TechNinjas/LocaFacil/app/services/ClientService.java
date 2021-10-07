@@ -5,12 +5,12 @@ import TechNinjas.LocaFacil.app.models.Company;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
-import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.CustomerNotFoundException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -33,16 +33,18 @@ public class ClientService {
     private ModelMapper mapper = new ModelMapper();
 
     public Client findById(Integer id) {
-        UserSS userSS = UserService.authenticated();
-        //Ele ta barrando no userSS, como ele fosse nulo
-        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-            throw new AuthorizationException("Acesso negado!");
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> client = repository.findByEmail(email);
+        if(client.isPresent()) {
+            if ((!client.get().getProfiles().contains(Profile.ADMIN)) && !id.equals(client.get().getId())) {
+                throw new AuthorizationException("Acesso negado!");
+            } else {
+                Optional<Client> obj = repository.findById(id);
+                return obj.orElseThrow(() ->
+                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName()));
+            }
         }
-
-        Optional<Client> obj = repository.findById(id);
-        return obj.orElseThrow(() ->
-                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
-        );
+        return null;
     }
 
     public List<Client> findAll() {

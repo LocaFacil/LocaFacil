@@ -40,6 +40,7 @@ public class ClientResource {
             @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable Integer id) {
         Client client = service.findById(id);

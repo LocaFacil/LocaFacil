@@ -1,14 +1,16 @@
 package TechNinjas.LocaFacil.app.services;
 
 import TechNinjas.LocaFacil.app.models.Client;
+import TechNinjas.LocaFacil.app.models.Company;
 import TechNinjas.LocaFacil.app.models.Dumpster;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
+import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
 import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
-import TechNinjas.LocaFacil.app.security.UserSS;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
@@ -20,25 +22,31 @@ public class DumpsterService {
     @Autowired
     private DumpsterRepository repository;
 
+    @Autowired
+    private CompanyRepository companyRepository;
+
     private ModelMapper mapper = new ModelMapper();
 
     public Dumpster findById(Integer id) {
-        UserSS userSS = UserService.authenticated();
-        if((userSS == null || !userSS.hasRole(Profile.ADMIN)) && !id.equals(userSS.getId())) {
-            throw new AuthorizationException("Acesso negado!");
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Company> company = companyRepository.findByEmail(email);
+        if(company.isPresent()) {
+            if ((!company.get().getProfiles().contains(Profile.ADMIN)) && !id.equals(company.get().getId())) {
+                throw new AuthorizationException("Acesso negado!");
+            } else {
+                Optional<Dumpster> obj = repository.findById(id);
+                return obj.orElseThrow(() ->
+                        new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName()));
+            }
         }
-
-        Optional<Dumpster> obj = repository.findById(id);
-        return obj.orElseThrow(() ->
-                new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ", Tipo: " + Client.class.getSimpleName())
-        );
+        return null;
     }
 
     public Dumpster create(Dumpster dump) {
-        UserSS userSS = UserService.authenticated();
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Company> company = companyRepository.findByEmail(email);
         dump.setId(null);
-        //Setando id empressa
-        dump.setCompany(userSS.getId());
+        dump.setCompany(company.get().getId());
         return repository.save(dump);
     }
 

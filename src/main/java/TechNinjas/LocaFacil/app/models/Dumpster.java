@@ -54,12 +54,4 @@ public class Dumpster implements Serializable {
         this.typetrash = obj.getTypetrash();
         this.company = obj.getCompany();
     }
-
-    public Integer getIdcompany() {
-        return idcompany;
-    }
-
-    public void setIdcompany(Integer idcompany) {
-        this.idcompany = idcompany;
-    }
 }

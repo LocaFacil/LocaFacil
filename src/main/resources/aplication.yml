@@ -1,0 +1,4 @@
+spring:
+  mail:
+    host: ${SMTP_SERVER}
+    test-connection: true

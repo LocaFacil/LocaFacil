@@ -26,6 +26,7 @@ public class ClientDTO implements Serializable {
     private String email;
     private String phone;
     private Boolean termsUse;
+    private String address;
 
     @JsonIgnore
     private String password;
@@ -38,6 +39,7 @@ public class ClientDTO implements Serializable {
         this.email = obj.getEmail();
         this.phone = obj.getPhone();
         this.password = obj.getPassword();
+        this.address = obj.getAddress();
 //        this.termsUse = obj.getTermsUse();
         this.profiles = obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }

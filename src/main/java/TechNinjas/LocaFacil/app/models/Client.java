@@ -47,6 +47,9 @@ public class Client implements Serializable {
     @NotNull(message = "Password field is required")
     private String password;
 
+    @ApiModelProperty(value = "User address")
+    private String address;
+
 //    @Column()
 //    private Boolean termsUse;
 
@@ -85,6 +88,7 @@ public class Client implements Serializable {
         this.password = obj.getPassword();
         this.cpf = obj.getCpf();
         this.phone = obj.getPhone();
+        this.address = obj.getAddress();
         this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

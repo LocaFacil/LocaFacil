@@ -1,31 +1,24 @@
 package TechNinjas.LocaFacil.app.models.enums;
 
-public enum Profile {
-
-    ADMIN(0, "ROLE_ADMIN"), USER(1, "ROLE_USER");
+public enum Status {
+    AVAILABLE(1), BUSY(2);
 
     private Integer cod;
-    private String descricao;
 
-    Profile(Integer cod, String descricao) {
+    Status(Integer cod){
         this.cod = cod;
-        this.descricao = descricao;
     }
 
     public Integer getCod() {
         return cod;
     }
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public static Profile toEnum(Integer cod) {
+    public static Status toEnum(Integer cod) {
         if(cod == null) {
             return null;
         }
 
-        for(Profile x : Profile.values()) {
+        for(Status x : Status.values()) {
             if(cod.equals(x.getCod())) {
                 return x;
             }

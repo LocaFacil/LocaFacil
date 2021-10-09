@@ -1,7 +1,9 @@
 package TechNinjas.LocaFacil.app.resources;
 
+import TechNinjas.LocaFacil.app.models.Dumpster;
 import TechNinjas.LocaFacil.app.models.Request;
 import TechNinjas.LocaFacil.app.models.dtos.RequestDTO;
+import TechNinjas.LocaFacil.app.models.enums.Status;
 import TechNinjas.LocaFacil.app.repositories.RequestRepository;
 import TechNinjas.LocaFacil.app.services.RequestService;
 import io.swagger.annotations.Api;
@@ -36,8 +38,12 @@ public class RequestResource {
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @PostMapping("/create")
-    public ResponseEntity<RequestDTO> create(@Valid @RequestBody Request request) {
-        Request req = service.create(request);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<RequestDTO> create(@Valid @RequestBody Request request, Dumpster dumpster) {
+        if(dumpster.getStatus().contains(Status.AVAILABLE)){
+            Request req = service.create(request);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }

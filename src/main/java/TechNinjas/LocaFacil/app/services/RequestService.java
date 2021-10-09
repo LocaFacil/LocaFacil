@@ -45,9 +45,10 @@ public class RequestService {
     public Request create(Request request) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Client> client = clientRepository.findByEmail(email);
-        request.setIdrequest(null);
+        request.setId(null);
+        //Colocar verificador para ver se a caçamba está livre ou ocupada
         //Colocar um update que ira tirar da quantidade de caçambas disponiveis
-        //request.setClient(client.get().getId());
+        request.setClient(client.get().getId());
         //dump.setCompany(dump.getCompany());
         return repository.save(request);
     }
@@ -57,9 +58,10 @@ public class RequestService {
     }
 
     public Request update(Integer id, @Valid Request obj) {
-        obj.setIdrequest(id);
+        obj.setId(id);
         Request request = findById(id);
         request = mapper.map(obj, Request.class);
+        //Muda o status da caçamba para AVAILABLE, assim  como tambem fala para ser RECOLHIDO
         return repository.save(request);
     }
 

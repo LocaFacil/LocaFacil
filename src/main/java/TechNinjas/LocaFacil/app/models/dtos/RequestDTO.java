@@ -1,36 +1,29 @@
 package TechNinjas.LocaFacil.app.models.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.io.Serializable;
 import java.sql.Date;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class RequestDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
-    private Integer idrequest;
-    private Date dataInicio;
-    private Date dataFim;
+    private Integer id;
+    private Date dateInit;
+    private Date dateFinal;
+    private Integer client;
 
-    public Integer getIdrequest() {
-        return idrequest;
-    }
-
-    public void setIdrequest(Integer idrequest) {
-        this.idrequest = idrequest;
-    }
-
-    public Date getDataInicio() {
-        return dataInicio;
-    }
-
-    public void setDataInicio(Date dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public Date getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(Date dataFim) {
-        this.dataFim = dataFim;
+    public RequestDTO(RequestDTO obj) {
+        this.id = obj.getId();
+        this.dateInit = obj.getDateInit();
+        this.dateFinal = obj.getDateFinal();
+        this.client = obj.getClient();
     }
 }

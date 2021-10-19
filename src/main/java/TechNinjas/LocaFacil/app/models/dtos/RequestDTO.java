@@ -1,5 +1,6 @@
 package TechNinjas.LocaFacil.app.models.dtos;
 
+import TechNinjas.LocaFacil.app.models.Request;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,16 @@ public class RequestDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
     private Integer id;
-    private Date dateInit;
-    private Date dateFinal;
+    private Date dateinit;
+    private Date datefinal;
     private Integer client;
+    private Integer dumpster;
 
-    public RequestDTO(RequestDTO obj) {
+    public RequestDTO(Request obj) {
         this.id = obj.getId();
-        this.dateInit = obj.getDateInit();
-        this.dateFinal = obj.getDateFinal();
+        this.dateinit = obj.getDateinit();
+        this.datefinal = obj.getDatefinal();
         this.client = obj.getClient();
+        this.dumpster = obj.getDumpster();
     }
 }

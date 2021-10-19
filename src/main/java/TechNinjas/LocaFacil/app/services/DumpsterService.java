@@ -14,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +41,10 @@ public class DumpsterService {
             }
         }
         return null;
+    }
+
+    public List<Dumpster> findAll() {
+        return repository.findAll();
     }
 
     public Dumpster create(Dumpster dump) {

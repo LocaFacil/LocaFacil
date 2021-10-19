@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api("Dumpster Management System")
 @RestController
@@ -52,6 +54,21 @@ public class DumpsterResource {
     public ResponseEntity<DumpsterDTO> findById(@PathVariable Integer id) {
         Dumpster dump = service.findById(id);
         return ResponseEntity.ok().body(new DumpsterDTO(dump));
+    }
+    /*
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<DumpsterDTO> findByIdCompany(@PathVariable Integer id) {
+        Dumpster dump = service.findById(id);
+        return ResponseEntity.ok().body(new DumpsterDTO(dump));
+    }
+    */
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<DumpsterDTO>> findAll() {
+        List<Dumpster> list = service.findAll();
+        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 
     @ApiOperation(value = "Update dumpster by id")

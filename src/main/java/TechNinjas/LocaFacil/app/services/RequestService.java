@@ -4,6 +4,7 @@ import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.Request;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
 import TechNinjas.LocaFacil.app.repositories.ClientRepository;
+import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
 import TechNinjas.LocaFacil.app.repositories.RequestRepository;
 import TechNinjas.LocaFacil.app.services.exceptions.AuthorizationException;
 import TechNinjas.LocaFacil.app.services.exceptions.ObjectNotFoundException;
@@ -25,13 +26,17 @@ public class RequestService {
     @Autowired
     ClientRepository clientRepository;
 
+    @Autowired
+    DumpsterRepository dumpsterRepository;
+
     private ModelMapper mapper = new ModelMapper();
 
     public Request findById(Integer id) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Client> client = clientRepository.findByEmail(email);
         if(client.isPresent()) {
-            if ((!client.get().getProfiles().contains(Profile.ADMIN)) && !id.equals(client.get().getId())) {
+            //Fazer uma verificação para ver ser essa requisição é do cliente X
+            if ((!client.get().getProfiles().contains(Profile.ADMIN)) /*&& !request.getClient().equals(client.get().getId())*/) {
                 throw new AuthorizationException("Acesso negado!");
             } else {
                 Optional<Request> obj = repository.findById(id);
@@ -45,11 +50,9 @@ public class RequestService {
     public Request create(Request request) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Client> client = clientRepository.findByEmail(email);
+        //Pensar numa forma de verificação, só deixar criar requisição caso tenha caçamba disponivel
         request.setId(null);
-        //Colocar verificador para ver se a caçamba está livre ou ocupada
-        //Colocar um update que ira tirar da quantidade de caçambas disponiveis
         request.setClient(client.get().getId());
-        //dump.setCompany(dump.getCompany());
         return repository.save(request);
     }
 

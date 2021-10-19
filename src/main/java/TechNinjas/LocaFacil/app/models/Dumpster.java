@@ -35,6 +35,12 @@ public class Dumpster implements Serializable {
 
     @ApiModelProperty(value = "Dumpster-Company")
     //@OneToOne()
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    private Company company;
+
+     */
     private Integer company;
 
     @ApiModelProperty(value = "Dumpster Status")
@@ -73,4 +79,14 @@ public class Dumpster implements Serializable {
     public void addStatus(Status statuss) {
         status.add(statuss.getCod());
     }
+/*
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+ */
 }

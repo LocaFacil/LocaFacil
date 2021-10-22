@@ -85,13 +85,14 @@ public class DumpsterResource {
                 .collect(Collectors.toList());
     }
 
-//    @GetMapping
-//    @PreAuthorize("hasAnyRole('ADMIN')")
-//    public ResponseEntity<List<DumpsterDTO>> findAll() {
-//        List<Dumpster> list = service.findAll();
-//        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
-//        return ResponseEntity.ok().body(listDTO);
-//    }
+    //Remover esta função, o qual qualquer empresa consegue puxar caçamba de outras
+    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<DumpsterDTO>> findAll() {
+        List<Dumpster> list = service.findAll();
+        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
+    }
 
     @ApiOperation(value = "Update dumpster by id")
     @ApiResponses(value = {

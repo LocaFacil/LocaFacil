@@ -2,6 +2,8 @@ package TechNinjas.LocaFacil.app.resources;
 
 import TechNinjas.LocaFacil.app.models.Dumpster;
 import TechNinjas.LocaFacil.app.models.dtos.DumpsterDTO;
+import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
+import TechNinjas.LocaFacil.app.repositories.DumpsterCustomRepository;
 import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
 import TechNinjas.LocaFacil.app.services.DumpsterService;
 import io.swagger.annotations.Api;
@@ -25,6 +27,12 @@ public class DumpsterResource {
 
     @Autowired
     DumpsterRepository dumpsterRepository;
+
+    @Autowired
+    DumpsterCustomRepository dumpsterCustomRepository;
+
+    @Autowired
+    CompanyRepository companyRepository;
 
     @Autowired
     DumpsterService service;
@@ -55,21 +63,35 @@ public class DumpsterResource {
         Dumpster dump = service.findById(id);
         return ResponseEntity.ok().body(new DumpsterDTO(dump));
     }
-    /*
-    @GetMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<DumpsterDTO> findByIdCompany(@PathVariable Integer id) {
-        Dumpster dump = service.findById(id);
-        return ResponseEntity.ok().body(new DumpsterDTO(dump));
+
+    @ApiOperation(value = "Find dumpster by filter")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "found dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @GetMapping(value = "/filter")
+    public List<DumpsterDTO> findDumpsterByCompanyId(
+            @RequestParam(value = "id", required = false) Integer id,
+            @RequestParam(value = "price", required = false) Double price,
+            @RequestParam(value = "size", required = false) Integer size,
+            @RequestParam(value = "typetrash", required = false) String typetrash,
+            @RequestParam(value = "company_id", required = false) Integer company_id){
+        //System.out.println("dumpster"+companyid);
+        return this.dumpsterCustomRepository.find(id, price, size,typetrash,company_id)
+        //return this.dumpsterRepository.findBySizeContains(size)
+                .stream()
+                .map(obj -> new DumpsterDTO(obj))
+                .collect(Collectors.toList());
     }
-    */
-    @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<List<DumpsterDTO>> findAll() {
-        List<Dumpster> list = service.findAll();
-        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
-    }
+
+//    @GetMapping
+//    @PreAuthorize("hasAnyRole('ADMIN')")
+//    public ResponseEntity<List<DumpsterDTO>> findAll() {
+//        List<Dumpster> list = service.findAll();
+//        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
+//        return ResponseEntity.ok().body(listDTO);
+//    }
 
     @ApiOperation(value = "Update dumpster by id")
     @ApiResponses(value = {

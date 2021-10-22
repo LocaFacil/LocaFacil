@@ -19,14 +19,14 @@ public class RequestDTO implements Serializable {
     private Integer id;
     private Date dateinit;
     private Date datefinal;
-    private Integer client;
-    private Integer dumpster;
+    private Integer clientid;
+    private Integer dumpsterid;
 
     public RequestDTO(Request obj) {
         this.id = obj.getId();
         this.dateinit = obj.getDateinit();
         this.datefinal = obj.getDatefinal();
-        this.client = obj.getClient();
-        this.dumpster = obj.getDumpster();
+        this.clientid = obj.getClient().getId();
+        this.dumpsterid = obj.getDumpster().getId();
     }
 }

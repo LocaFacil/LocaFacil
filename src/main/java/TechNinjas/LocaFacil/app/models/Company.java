@@ -8,7 +8,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,9 +49,9 @@ public class Company implements Serializable {
     @NotNull(message = "Password field is required")
     private String password;
 
-    //@ApiModelProperty(value = "Dumpster management")
-    //@OneToOne
-    //private Dumpster dumpster;
+    @ApiModelProperty(value = "Dumpster management")
+    @OneToMany(mappedBy = "company")
+    private List<Dumpster> dumpster = new ArrayList<>();
 
     @ApiModelProperty(value = "Company Type")
     @ElementCollection(fetch = FetchType.EAGER)
@@ -88,7 +90,11 @@ public class Company implements Serializable {
         profiles.add(profile.getCod());
     }
 
-    public Set<Profile> getIdProfiles() {
-        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+//    public Set<Profile> getIdProfiles() {
+//        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
+//    }
+
+    public List<Dumpster> getDumpster() {
+        return dumpster;
     }
 }

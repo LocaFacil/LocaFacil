@@ -23,7 +23,7 @@ public class DumpsterDTO implements Serializable {
     private Integer size;
     private Double price;
     private String typetrash;
-    private Integer company;
+    private Integer companyId;
     private Set<Integer> status = new HashSet<>();
 
     public DumpsterDTO(Dumpster obj){
@@ -31,7 +31,7 @@ public class DumpsterDTO implements Serializable {
         this.size = obj.getSize();
         this.price = obj.getPrice();
         this.typetrash = obj.getTypetrash();
-        this.company = obj.getCompany();
+        this.companyId = obj.getCompany().getId();
         this.status = obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

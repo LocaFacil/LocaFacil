@@ -51,7 +51,7 @@ public class DumpsterService {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Company> company = companyRepository.findByEmail(email);
         dump.setId(null);
-        dump.setCompany(company.get().getId());
+        dump.setCompany(company.get());
         return repository.save(dump);
     }
 
@@ -70,12 +70,12 @@ public class DumpsterService {
     //Classe para fazer verificação para ver se é uma caçamba livre antes de locar
 
     //Classe que ira atualizar o status da caçamba locada
-    public Dumpster updateForRequest(Integer id, @Valid Dumpster obj){
-        obj.setId(id);
-        Dumpster dump = findById(id);
-        dump = mapper.map(obj, Dumpster.class);
-        return repository.save(dump);
-    }
+//    public Dumpster updateForRequest(Integer id, @Valid Dumpster obj){
+//        obj.setId(id);
+//        Dumpster dump = findById(id);
+//        dump = mapper.map(obj, Dumpster.class);
+//        return repository.save(dump);
+//    }
 }
 
 

@@ -9,7 +9,9 @@ import lombok.Data;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -49,6 +51,10 @@ public class Client implements Serializable {
 
     @ApiModelProperty(value = "User address")
     private String address;
+
+    @ApiModelProperty(value = "Request management")
+    @OneToMany(mappedBy = "client")
+    private List<Request> request = new ArrayList<>();
 
 //    @Column()
 //    private Boolean termsUse;

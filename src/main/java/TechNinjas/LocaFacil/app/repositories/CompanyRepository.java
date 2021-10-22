@@ -12,4 +12,6 @@ public interface CompanyRepository extends JpaRepository <Company, Integer> {
 
     @Transactional(readOnly = true)
     Optional<Company> findByEmail(String email);
+
+    Optional<Company> findById(Integer id);
 }

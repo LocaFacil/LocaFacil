@@ -52,7 +52,7 @@ public class RequestService {
         Optional<Client> client = clientRepository.findByEmail(email);
         //Pensar numa forma de verificação, só deixar criar requisição caso tenha caçamba disponivel
         request.setId(null);
-        request.setClient(client.get().getId());
+        request.setClient(client.get());
         return repository.save(request);
     }
 

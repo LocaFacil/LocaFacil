@@ -34,14 +34,9 @@ public class Dumpster implements Serializable {
     private String typetrash;
 
     @ApiModelProperty(value = "Dumpster-Company")
-    //@OneToOne()
-    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Company company;
-
-     */
-    private Integer company;
 
     @ApiModelProperty(value = "Dumpster Status")
     @ElementCollection(fetch = FetchType.LAZY)
@@ -54,7 +49,7 @@ public class Dumpster implements Serializable {
         addStatus(Status.AVAILABLE);
     }
 
-    public Dumpster(Integer id, Integer size, double price, String typetrash, Integer company){
+    public Dumpster(Integer id, Integer size, double price, String typetrash, Company company){
         this.id = id;
         this.size = size;
         this.price = price;
@@ -63,12 +58,15 @@ public class Dumpster implements Serializable {
         addStatus(Status.AVAILABLE);
     }
 
+    @Column(name = "company_id", insertable = false, updatable = false)
+    private /*transient*/ Integer companyidois;
+
     public Dumpster(DumpsterDTO obj){
         this.id = obj.getId();
         this.size = obj.getSize();
         this.price = obj.getPrice();
         this.typetrash = obj.getTypetrash();
-        this.company = obj.getCompany();
+        this.companyidois = obj.getCompanyId();
         this.status= obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 
@@ -79,14 +77,11 @@ public class Dumpster implements Serializable {
     public void addStatus(Status statuss) {
         status.add(statuss.getCod());
     }
-/*
+
     public Company getCompany() {
         return company;
     }
-
     public void setCompany(Company company) {
         this.company = company;
     }
-
- */
 }

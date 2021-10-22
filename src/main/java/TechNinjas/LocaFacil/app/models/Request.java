@@ -4,10 +4,7 @@ import TechNinjas.LocaFacil.app.models.dtos.RequestDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
@@ -32,30 +29,20 @@ public class Request implements Serializable {
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date datefinal;
 
-    /*
     @ApiModelProperty(value = "Request-Client")
-    @ManyToOne
-    @JoinColumn(name = "id_client", nullable = false, unique = false)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
-     */
-    private Integer client;
 
-    /*
     @ApiModelProperty(value = "Request-Dumpster")
-    @ManyToOne
-    @JoinColumn(name = "id_dumpster", nullable = false, unique = false)
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dumpster_id", referencedColumnName = "id")
     private Dumpster dumpster;
-     */
-
-    private Integer dumpster;
-
 
     public Request() {
     }
 
-    public Request(Integer id, Date dateinit, Date datefinal, Integer client, Integer dumpster) {
+    public Request(Integer id, Date dateinit, Date datefinal, Client client, Dumpster dumpster) {
         this.id = id;
         this.dateinit = dateinit;
         this.datefinal = datefinal;
@@ -63,12 +50,15 @@ public class Request implements Serializable {
         this.dumpster = dumpster;
     }
 
+    private transient Integer clientidois;
+    private transient Integer dumpsteridois;
+
     public Request(RequestDTO obj) {
         this.id = obj.getId();
         this.dateinit = obj.getDateinit();
         this.datefinal = obj.getDatefinal();
-        this.client = obj.getClient();
-        this.dumpster = obj.getDumpster();
+        this.clientidois = obj.getClientid();
+        this.dumpsteridois = obj.getDumpsterid();
     }
 
 

@@ -118,4 +118,16 @@ public class ClientResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @ApiOperation(value = "Check user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Check user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @GetMapping(value = "/check/{id}")
+    public ResponseEntity<Boolean> checkUser (@PathVariable Integer id){
+        Boolean client = service.checkUser(id);
+        return ResponseEntity.ok().body(client);
+    }
 }

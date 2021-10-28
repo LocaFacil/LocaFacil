@@ -33,10 +33,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Optional<Company> userCompany = companyRepository.findByEmail(email);
 
         if (user.isPresent()){
-            return new UserSS(user.get().getId(), user.get().getEmail(), user.get().getPassword(), user.get().getProfiles());
+            return new UserSS(user.get().getId(), user.get().getName(),user.get().getEmail(), user.get().getPassword(), user.get().getProfiles());
         }else{
             if (userCompany.isPresent()){
-                return new UserSS(userCompany.get().getId(), userCompany.get().getEmail(), userCompany.get().getPassword(), userCompany.get().getProfiles());
+                return new UserSS(userCompany.get().getId(), userCompany.get().getName(),userCompany.get().getEmail(), userCompany.get().getPassword(), userCompany.get().getProfiles());
             }else{
                 throw new UsernameNotFoundException(email);
             }

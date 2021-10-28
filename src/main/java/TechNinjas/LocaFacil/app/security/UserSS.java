@@ -20,12 +20,14 @@ public class UserSS implements UserDetails {
 
     @Getter
     private Integer id;
+    private String name;
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSS(Integer id, String email, String password, Set<Profile> profile) {
+    public UserSS(Integer id, String name, String email, String password, Set<Profile> profile) {
         this.id = id;
+        this.name = name;
         this.email = email;
         this.password = password;
         this.authorities = profile.stream().map(x -> new SimpleGrantedAuthority(x.getDescricao())).collect(Collectors.toSet());
@@ -33,6 +35,10 @@ public class UserSS implements UserDetails {
 
     public Integer getId() {
         return id;
+    }
+
+    public String getName(){
+        return name;
     }
 
     @Override

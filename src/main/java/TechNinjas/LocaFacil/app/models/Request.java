@@ -19,6 +19,21 @@ public class Request implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @ApiModelProperty(value = "Request Size Dumpster")
+    private Integer size;
+
+    @ApiModelProperty(value = "Request Address")
+    private String address;
+
+    @ApiModelProperty(value = "Request Address Number")
+    private Integer addressnum;
+
+    //@ApiModelProperty(value = "Request Delivery Date")
+    //private Date deliverydate;
+
+    @ApiModelProperty(value = "Request TypeTrash Dumpster")
+    private String typetrash;
+
     @ApiModelProperty(value = "Request Date Init")
     @NotNull(message = "Date init field is required")
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
@@ -42,16 +57,23 @@ public class Request implements Serializable {
     public Request() {
     }
 
-    public Request(Integer id, Date dateinit, Date datefinal, Client client, Dumpster dumpster) {
+    public Request(Integer id, Integer size, String address, Integer addressnum , String typetrash, Date dateinit, Date datefinal, Client client, Dumpster dumpster) {
         this.id = id;
+        this.size = size;
+        this.address = address;
+        this.addressnum = addressnum;
+        this.typetrash = typetrash;
         this.dateinit = dateinit;
         this.datefinal = datefinal;
         this.client = client;
         this.dumpster = dumpster;
     }
 
-    private transient Integer clientidois;
-    private transient Integer dumpsteridois;
+    @Column(name = "client_id", insertable = false, updatable = false)
+    private Integer clientidois;
+    
+    @Column(name = "dumpster_id", insertable = false, updatable = false)
+    private Integer dumpsteridois;
 
     public Request(RequestDTO obj) {
         this.id = obj.getId();
@@ -60,6 +82,5 @@ public class Request implements Serializable {
         this.clientidois = obj.getClientid();
         this.dumpsteridois = obj.getDumpsterid();
     }
-
 
 }

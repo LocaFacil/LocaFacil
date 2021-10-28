@@ -85,6 +85,33 @@ public class ClientService {
             }
         }
     }
+
+    public Boolean checkUser(Integer id) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> client = repository.findByEmail(email);
+        if(client.isPresent()) {
+            if(!id.equals(client.get().getId())) {
+                throw new AuthorizationException("Acesso negado!");
+            }else{
+                try{
+                    if(!client.get().getCpf().isEmpty()){
+                        if(!client.get().getPhone().isEmpty()){
+                            if(!client.get().getAddress().isEmpty()){
+                                if(!client.get().getAddressnum().equals(null)){
+                                    return true;
+                                }else{
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    //System.out.println("error: " + e);
+                }
+            }
+        }
+        return false;
+    }
 }
 
 

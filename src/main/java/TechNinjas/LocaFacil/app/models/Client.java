@@ -52,6 +52,9 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "User address")
     private String address;
 
+    @ApiModelProperty(value = "User address number")
+    private Integer addressnum;
+
     @ApiModelProperty(value = "Request management")
     @OneToMany(mappedBy = "client")
     private List<Request> request = new ArrayList<>();
@@ -95,6 +98,7 @@ public class Client implements Serializable {
         this.cpf = obj.getCpf();
         this.phone = obj.getPhone();
         this.address = obj.getAddress();
+        this.addressnum = obj.getAddressnum();
         this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

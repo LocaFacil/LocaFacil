@@ -75,10 +75,9 @@ public class DumpsterResource {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "price", required = false) Double price,
             @RequestParam(value = "size", required = false) Integer size,
-            @RequestParam(value = "typetrash", required = false) String typetrash,
             @RequestParam(value = "company_id", required = false) Integer company_id){
         //System.out.println("dumpster"+companyid);
-        return this.dumpsterCustomRepository.find(id, price, size,typetrash,company_id)
+        return this.dumpsterCustomRepository.find(id, price, size, company_id)
         //return this.dumpsterRepository.findBySizeContains(size)
                 .stream()
                 .map(obj -> new DumpsterDTO(obj))

@@ -30,9 +30,6 @@ public class Dumpster implements Serializable {
     @Column(name = "price", nullable = false)
     private double price;
 
-    @ApiModelProperty(value = "Dumpster Type")
-    private String typetrash;
-
     @ApiModelProperty(value = "Dumpster-Company")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
@@ -49,11 +46,10 @@ public class Dumpster implements Serializable {
         addStatus(Status.AVAILABLE);
     }
 
-    public Dumpster(Integer id, Integer size, double price, String typetrash, Company company){
+    public Dumpster(Integer id, Integer size, double price, Company company){
         this.id = id;
         this.size = size;
         this.price = price;
-        this.typetrash = typetrash;
         this.company = company;
         addStatus(Status.AVAILABLE);
     }
@@ -65,7 +61,6 @@ public class Dumpster implements Serializable {
         this.id = obj.getId();
         this.size = obj.getSize();
         this.price = obj.getPrice();
-        this.typetrash = obj.getTypetrash();
         this.companyidois = obj.getCompanyId();
         this.status= obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }

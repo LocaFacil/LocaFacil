@@ -62,7 +62,7 @@ public class Dumpster implements Serializable {
         this.size = obj.getSize();
         this.price = obj.getPrice();
         this.companyidois = obj.getCompanyId();
-        this.status= obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
+        this.status = obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 
     public Set<Status> getStatus() {

@@ -1,6 +1,7 @@
 package TechNinjas.LocaFacil.app.models;
 
 import TechNinjas.LocaFacil.app.models.dtos.RequestDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -36,12 +37,12 @@ public class Request implements Serializable {
 
     @ApiModelProperty(value = "Request Date Init")
     @NotNull(message = "Date init field is required")
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date dateinit;
 
     @ApiModelProperty(value = "Request Final Date")
     @NotNull(message = "Date final field is required")
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date datefinal;
 
     @ApiModelProperty(value = "Request-Client")
@@ -77,6 +78,10 @@ public class Request implements Serializable {
 
     public Request(RequestDTO obj) {
         this.id = obj.getId();
+        this.size = obj.getSize();
+        this.address = obj.getAddress();
+        this.addressnum = obj.getAddressnum();
+        this.typetrash = obj.getTypetrash();
         this.dateinit = obj.getDateinit();
         this.datefinal = obj.getDatefinal();
         this.clientidois = obj.getClientid();

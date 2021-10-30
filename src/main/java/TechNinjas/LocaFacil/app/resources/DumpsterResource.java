@@ -5,6 +5,7 @@ import TechNinjas.LocaFacil.app.models.dtos.DumpsterDTO;
 import TechNinjas.LocaFacil.app.repositories.CompanyRepository;
 import TechNinjas.LocaFacil.app.repositories.DumpsterCustomRepository;
 import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
+import TechNinjas.LocaFacil.app.repositories.DumpsterStatusRepository;
 import TechNinjas.LocaFacil.app.services.DumpsterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +31,9 @@ public class DumpsterResource {
 
     @Autowired
     DumpsterCustomRepository dumpsterCustomRepository;
+
+    @Autowired
+    DumpsterStatusRepository dumpsterStatusRepository;
 
     @Autowired
     CompanyRepository companyRepository;
@@ -79,6 +83,17 @@ public class DumpsterResource {
         //System.out.println("dumpster"+companyid);
         return this.dumpsterCustomRepository.find(id, price, size, company_id)
         //return this.dumpsterRepository.findBySizeContains(size)
+                .stream()
+                .map(obj -> new DumpsterDTO(obj))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping(value = "/status")
+    public List<DumpsterDTO> findDumpsterByStatus(
+            @RequestParam(value = "tb_dumpster_id", required = false) Integer tb_dumpster_id){
+            //@RequestParam(value = "status", required = false) Integer status){
+        return this.dumpsterStatusRepository.find(tb_dumpster_id)
+                //return this.dumpsterRepository.findBySizeContains(size)
                 .stream()
                 .map(obj -> new DumpsterDTO(obj))
                 .collect(Collectors.toList());

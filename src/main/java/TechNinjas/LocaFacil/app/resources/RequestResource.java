@@ -49,7 +49,11 @@ public class RequestResource {
     @PostMapping("/create")
     public ResponseEntity<RequestDTO> create(@Valid @RequestBody Request request) {
             Request req = service.create(request);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            if(req != null){
+                return ResponseEntity.ok().body(new RequestDTO(req));
+            }else{
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
     }
 
     @ApiOperation(value = "Update request by id")

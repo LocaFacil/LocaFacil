@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,32 +50,28 @@ public class RequestService {
         return null;
     }
 
-    //Primeiro tem que ser verificado antes da solicitação, se o cliente tem cpf cadastrado, e endereço ele avança para
-    //proxima tela.
-
     public Request create(Request request) {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Optional<Client> client = clientRepository.findByEmail(email);
-        //Ver parte de update no cliente já existe porem terminar de colocar os dados que falta
-//        if(client.get().getAddress() == null){
-//            if(client.get().getAddressnum() == null){
-//                if(client.get().getPhone() == null){
-//                    if(client.get().getCpf() == null){
-//                        //client.get().setCpf();
-//                    }
-//                }
-//            }
-//        }
         request.setId(null);
         request.setClient(client.get());
-        //Pensar numa forma de verificação, só deixar criar requisição caso tenha caçamba disponivel
         List<Dumpster> dumpster = dumpsterRepository.findAll();
-        if(dumpster.contains(Status.AVAILABLE)){
-            //request.setDumpsteridois();
-            return repository.save(request);
-            //Parte de pagamento
+        //Primeiro fazer um repository o qual puxa todas as caçambas livres
+        try{
+            //Fazer jeito para que verifique se a caçamba está livre ou não
+            if(dumpster.containsAll(Collections.singleton(Status.AVAILABLE))){
+                Collections.shuffle(dumpster);
+                int randomLeght = 3;
+                List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
+                request.setDumpster(dump3.get(0));
+                return repository.save(request);
+            }else{
+                System.out.println("\n Nao foi possivel solicitar");
+                return null;
+            }
+        }catch (Exception e){
+            return null;
         }
-        return null;
     }
 
     public List<Request> findAll() {

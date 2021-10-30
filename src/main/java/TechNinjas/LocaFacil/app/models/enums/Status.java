@@ -1,7 +1,7 @@
 package TechNinjas.LocaFacil.app.models.enums;
 
 public enum Status {
-    AVAILABLE(1), BUSY(2);
+    AVAILABLE(1), BUSY(2), WAITING(3), RELEASE(4);
 
     private Integer cod;
 

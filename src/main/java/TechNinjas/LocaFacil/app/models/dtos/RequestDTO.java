@@ -17,6 +17,10 @@ public class RequestDTO implements Serializable {
     private static final Long SerialVersionUID = 1L;
 
     private Integer id;
+    private Integer size;
+    private String address;
+    private Integer addressnum;
+    private String typetrash;
     private Date dateinit;
     private Date datefinal;
     private Integer clientid;
@@ -24,6 +28,10 @@ public class RequestDTO implements Serializable {
 
     public RequestDTO(Request obj) {
         this.id = obj.getId();
+        this.size = obj.getSize();
+        this.address = obj.getAddress();
+        this.addressnum = obj.getAddressnum();
+        this.typetrash = obj.getTypetrash();
         this.dateinit = obj.getDateinit();
         this.datefinal = obj.getDatefinal();
         this.clientid = obj.getClient().getId();

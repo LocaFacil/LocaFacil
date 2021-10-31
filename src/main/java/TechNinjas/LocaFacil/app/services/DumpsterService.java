@@ -14,8 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DumpsterService {
@@ -65,6 +64,11 @@ public class DumpsterService {
     public void delete(Integer id) {
         findById(id);
         repository.deleteById(id);
+    }
+
+    public List<Dumpster> getDumpsterByStatus(Integer statusid){
+        //Set<String> status = new HashSet<String>(Arrays.asList(stat));
+        return repository.getDumpsterByStatus(statusid);
     }
 
     //Classe para fazer verificação para ver se é uma caçamba livre antes de locar

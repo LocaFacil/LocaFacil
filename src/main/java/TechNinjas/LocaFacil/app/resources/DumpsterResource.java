@@ -88,15 +88,23 @@ public class DumpsterResource {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping(value = "/status")
-    public List<DumpsterDTO> findDumpsterByStatus(
-            @RequestParam(value = "tb_dumpster_id", required = false) Integer tb_dumpster_id){
-            //@RequestParam(value = "status", required = false) Integer status){
-        return this.dumpsterStatusRepository.find(tb_dumpster_id)
-                //return this.dumpsterRepository.findBySizeContains(size)
-                .stream()
-                .map(obj -> new DumpsterDTO(obj))
-                .collect(Collectors.toList());
+//    @GetMapping(value = "/status")
+//    public List<DumpsterDTO> findDumpsterByStatus(
+//            @RequestParam(value = "tb_dumpster_id", required = false) Integer tb_dumpster_id){
+//            //@RequestParam(value = "status", required = false) Integer status){
+//        return this.dumpsterStatusRepository.find(tb_dumpster_id)
+//                //return this.dumpsterRepository.findBySizeContains(size)
+//                .stream()
+//                .map(obj -> new DumpsterDTO(obj))
+//                .collect(Collectors.toList());
+//    }
+
+    @GetMapping(value = "/status/{statusid}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<DumpsterDTO>> getDumpsterByStatus(@PathVariable Integer statusid) {
+        List<Dumpster> dumplist = service.getDumpsterByStatus(statusid);
+        List<DumpsterDTO> listDTO = dumplist.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 
     //Remover esta função, o qual qualquer empresa consegue puxar caçamba de outras
@@ -104,6 +112,14 @@ public class DumpsterResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<DumpsterDTO>> findAll() {
         List<Dumpster> list = service.findAll();
+        List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
+    }
+
+    @GetMapping(value = "/status/available")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<DumpsterDTO>> findAllStatus() {
+        List<Dumpster> list = dumpsterRepository.getDumpsterByStatusId();
         List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDTO);
     }

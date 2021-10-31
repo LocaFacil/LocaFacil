@@ -18,15 +18,14 @@ public class DumpsterStatusRepository {
 
         //select c, p from tb_dumpster c INNER JOIN status p ON c.id = p.tb_dumpster_id WHERE p.status = 3 AND p.tb_dumpster_id =5
 
-        //String query = "select C, P from Tb_Dumpster C INNER JOIN status P ON C.id = P.tb_dumpster_id ";
-        String query = "select C from Tb_Dumpster C ";
-        String condition = "INNER JOIN ";
-        String query2 = "Status P ";
-        String query3 = "on C.id = P.tb_dumpster_id ";
-        String condition2 = "where";
+        String query = "select C from Tb_Dumpster C, Status P ";
+        String condition = "where ";
+        String query2 = "C.Status = P ";
+        //String query3 = "on C.id = P.tb_dumpster_id ";
+        String condition2 = "and ";
 
         if(tb_dumpster_id != null) {
-            query += condition += query2 += query3 += condition2 + " P.tb_dumpster_id = :tb_dumpster_id";
+            query += condition += query2/* += query3 */+= condition2 + " P.tb_dumpster_id = :tb_dumpster_id";
             //condition = " and ";
         }
 

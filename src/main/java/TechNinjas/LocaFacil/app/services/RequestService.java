@@ -4,7 +4,6 @@ import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.Dumpster;
 import TechNinjas.LocaFacil.app.models.Request;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
-import TechNinjas.LocaFacil.app.models.enums.Status;
 import TechNinjas.LocaFacil.app.repositories.ClientRepository;
 import TechNinjas.LocaFacil.app.repositories.DumpsterRepository;
 import TechNinjas.LocaFacil.app.repositories.RequestRepository;
@@ -55,21 +54,23 @@ public class RequestService {
         Optional<Client> client = clientRepository.findByEmail(email);
         request.setId(null);
         request.setClient(client.get());
-        List<Dumpster> dumpster = dumpsterRepository.findAll();
+        //List<Dumpster> dumpster = dumpsterRepository.findAll();
+        List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusId();
         //Primeiro fazer um repository o qual puxa todas as caçambas livres
         try{
             //Fazer jeito para que verifique se a caçamba está livre ou não
-            if(dumpster.containsAll(Collections.singleton(Status.AVAILABLE))){
+            //if(dumpster){
                 Collections.shuffle(dumpster);
-                int randomLeght = 3;
+                int randomLeght = 1;
                 List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
                 request.setDumpster(dump3.get(0));
                 return repository.save(request);
-            }else{
-                System.out.println("\n Nao foi possivel solicitar");
-                return null;
-            }
+//            }else{
+//                System.out.println("\n Nao foi possivel solicitar");
+//                return null;
+//            }
         }catch (Exception e){
+            System.out.println(e);
             return null;
         }
     }

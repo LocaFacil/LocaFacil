@@ -41,16 +41,20 @@ public class Dumpster implements Serializable {
     private Set<Integer> status = new HashSet<>();
     // 1 - livre, 2 - ocupada
 
+    @Column(name = "statusid")
+    private Integer statusid;
+
     //private Integer request;
     public Dumpster(){
         addStatus(Status.AVAILABLE);
     }
 
-    public Dumpster(Integer id, Integer size, double price, Company company){
+    public Dumpster(Integer id, Integer size, double price, Company company, Integer statusid){
         this.id = id;
         this.size = size;
         this.price = price;
         this.company = company;
+        this.statusid = statusid;
         addStatus(Status.AVAILABLE);
     }
 
@@ -63,6 +67,7 @@ public class Dumpster implements Serializable {
         this.price = obj.getPrice();
         this.companyidois = obj.getCompanyId();
         this.status = obj.getStatus().stream().map(x -> x.getCod()).collect(Collectors.toSet());
+        this.statusid = obj.getStatusid();
     }
 
     public Set<Status> getStatus() {
@@ -76,6 +81,7 @@ public class Dumpster implements Serializable {
     public Company getCompany() {
         return company;
     }
+
     public void setCompany(Company company) {
         this.company = company;
     }

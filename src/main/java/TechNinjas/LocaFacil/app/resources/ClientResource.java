@@ -126,8 +126,14 @@ public class ClientResource {
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @GetMapping(value = "/check/{id}")
-    public ResponseEntity<Boolean> checkUser (@PathVariable Integer id){
+    public ResponseEntity<Boolean> checkUser(@PathVariable Integer id){
         Boolean client = service.checkUser(id);
         return ResponseEntity.ok().body(client);
+    }
+
+    @PutMapping(value = "/check/{id}")
+    public ResponseEntity<ClientDTO> updateCheck(@PathVariable Integer id, @Valid @RequestBody Client obj) {
+        Client newObj = service.updateCheck(id, obj);
+        return ResponseEntity.ok().body(new ClientDTO(newObj));
     }
 }

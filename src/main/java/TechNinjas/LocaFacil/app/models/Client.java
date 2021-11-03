@@ -110,14 +110,6 @@ public class Client implements Serializable {
         profiles.add(profile.getCod());
     }
 
-    //public void setResetPasswordToken(String resetPasswordToken) {
-        //this.resetPasswordToken = resetPasswordToken;
-    //}
-
-    //public String getResetPasswordToken() {
-        //return resetPasswordToken;
-    //}
-
     public Set<Profile> getIdProfiles() {
         return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }

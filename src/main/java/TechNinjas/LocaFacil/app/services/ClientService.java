@@ -112,6 +112,21 @@ public class ClientService {
         }
         return false;
     }
+
+    public Client updateCheck(Integer id, @Valid Client obj) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> clientrecap = repository.findByEmail(email);
+        obj.setId(id);
+        obj.setName(clientrecap.get().getName());
+        obj.setEmail(clientrecap.get().getEmail());
+        obj.setPassword(clientrecap.get().getPassword());
+        Client client = findById(id);
+        client = mapper.map(obj, Client.class);
+        client.setName(obj.getName());
+        client.setEmail(obj.getEmail());
+        client.setPassword(obj.getPassword());
+        return repository.save(client);
+    }
 }
 
 

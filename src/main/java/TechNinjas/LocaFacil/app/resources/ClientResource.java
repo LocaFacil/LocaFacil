@@ -131,6 +131,12 @@ public class ClientResource {
         return ResponseEntity.ok().body(client);
     }
 
+    @ApiOperation(value = "Update user by id left check")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PutMapping(value = "/check/{id}")
     public ResponseEntity<ClientDTO> updateCheck(@PathVariable Integer id, @Valid @RequestBody Client obj) {
         Client newObj = service.updateCheck(id, obj);

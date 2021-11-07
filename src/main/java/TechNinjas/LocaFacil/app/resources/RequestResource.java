@@ -81,4 +81,11 @@ public class RequestResource {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping(value = "/dumpsterLiberate/{id}")
+    //@PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<RequestDTO> liberateUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj) {
+        Request newObj = service.liberateUpdate(id, obj);
+        return ResponseEntity.ok().body(new RequestDTO(newObj));
+    }
 }

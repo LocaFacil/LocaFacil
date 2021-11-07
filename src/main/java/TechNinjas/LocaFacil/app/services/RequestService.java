@@ -18,6 +18,7 @@ import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class RequestService {
@@ -64,6 +65,8 @@ public class RequestService {
                 int randomLeght = 1;
                 List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
                 request.setDumpster(dump3.get(0));
+                request.getDumpster().setStatusid(2);
+                request.getDumpster().setStatus(Set.of(2));
                 return repository.save(request);
 //            }else{
 //                System.out.println("\n Nao foi possivel solicitar");
@@ -90,6 +93,17 @@ public class RequestService {
     public void delete(Integer id) {
         findById(id);
         repository.deleteById(id);
+    }
+
+    public Request liberateUpdate(Integer id, @Valid Request obj){
+        obj.setId(id);
+        obj.getDumpster().setStatusid(1);
+        obj.getDumpster().setStatus(Set.of(1));
+        Request request = findById(id);
+        request = mapper.map(obj, Request.class);
+        //request.setDumpster(obj.getDumpster());
+        //request.getDumpster(obj.getDumpster());
+        return repository.save(request);
     }
 
 }

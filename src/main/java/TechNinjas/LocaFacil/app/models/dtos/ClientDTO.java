@@ -2,6 +2,7 @@ package TechNinjas.LocaFacil.app.models.dtos;
 
 import TechNinjas.LocaFacil.app.models.Client;
 import TechNinjas.LocaFacil.app.models.enums.Profile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +29,7 @@ public class ClientDTO implements Serializable {
     private String address;
     private Integer addressnum;
 
-    //@JsonIgnore
+    @JsonIgnore
     private String password;
     private Set<Integer> profiles = new HashSet<>();
 

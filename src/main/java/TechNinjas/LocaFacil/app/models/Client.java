@@ -59,8 +59,8 @@ public class Client implements Serializable {
     @OneToMany(mappedBy = "client")
     private List<Request> request = new ArrayList<>();
 
-//    @Column()
-//    private Boolean termsUse;
+    @ApiModelProperty(value = "Terms Use")
+    private Boolean termsUse;
 
     //Definição de tipo de usuario
     @ApiModelProperty(value = "User Type")
@@ -99,6 +99,7 @@ public class Client implements Serializable {
         this.phone = obj.getPhone();
         this.address = obj.getAddress();
         this.addressnum = obj.getAddressnum();
+        this.termsUse = obj.getTermsUse();
         this.profiles= obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

@@ -42,7 +42,7 @@ public class ClientDTO implements Serializable {
         this.password = obj.getPassword();
         this.address = obj.getAddress();
         this.addressnum = obj.getAddressnum();
-//        this.termsUse = obj.getTermsUse();
+        this.termsUse = obj.getTermsUse();
         this.profiles = obj.getProfiles().stream().map(x -> x.getCod()).collect(Collectors.toSet());
     }
 

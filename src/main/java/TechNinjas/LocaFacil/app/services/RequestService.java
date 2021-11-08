@@ -55,12 +55,12 @@ public class RequestService {
         Optional<Client> client = clientRepository.findByEmail(email);
         request.setId(null);
         request.setClient(client.get());
-        //List<Dumpster> dumpster = dumpsterRepository.findAll();
-        List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusId();
         //Primeiro fazer um repository o qual puxa todas as caçambas livres
-        try{
-            //Fazer jeito para que verifique se a caçamba está livre ou não
-            //if(dumpster){
+        //List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusId();
+        //Fazer verificação de tamanho
+        if(request.getSize() == 1){
+            List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusIdAndSizeSmall();
+            try{
                 Collections.shuffle(dumpster);
                 int randomLeght = 1;
                 List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
@@ -68,14 +68,43 @@ public class RequestService {
                 request.getDumpster().setStatusid(2);
                 request.getDumpster().setStatus(Set.of(2));
                 return repository.save(request);
-//            }else{
-//                System.out.println("\n Nao foi possivel solicitar");
-//                return null;
-//            }
-        }catch (Exception e){
-            System.out.println(e);
-            return null;
+            }catch (Exception e){
+                System.out.println(e);
+                return null;
+            }
+        }else{
+            List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusIdAndSizeBig();
+            try{
+                Collections.shuffle(dumpster);
+                int randomLeght = 1;
+                List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
+                request.setDumpster(dump3.get(0));
+                request.getDumpster().setStatusid(2);
+                request.getDumpster().setStatus(Set.of(2));
+                return repository.save(request);
+            }catch (Exception e){
+                System.out.println(e);
+                return null;
+            }
         }
+//        try{
+//            //Fazer jeito para que verifique se a caçamba está livre ou não
+//            //if(dumpster){
+//                Collections.shuffle(dumpster);
+//                int randomLeght = 1;
+//                List<Dumpster> dump3 = dumpster.subList(0, randomLeght);
+//                request.setDumpster(dump3.get(0));
+//                request.getDumpster().setStatusid(2);
+//                request.getDumpster().setStatus(Set.of(2));
+//                return repository.save(request);
+////            }else{
+////                System.out.println("\n Nao foi possivel solicitar");
+////                return null;
+////            }
+//        }catch (Exception e){
+//            System.out.println(e);
+//            return null;
+//        }
     }
 
     public List<Request> findAll() {
@@ -95,14 +124,32 @@ public class RequestService {
         repository.deleteById(id);
     }
 
+    //Liberar
     public Request liberateUpdate(Integer id, @Valid Request obj){
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> client = clientRepository.findByEmail(email);
+        Optional<Request> req = repository.findById(id);
         obj.setId(id);
+        obj.setSize(req.get().getSize());
+        obj.setAddress(req.get().getAddress());
+        obj.setAddressnum(req.get().getAddressnum());
+        obj.setTypetrash(req.get().getTypetrash());
+        obj.setDateinit(req.get().getDateinit());
+        obj.setDatefinal(req.get().getDatefinal());
+        obj.setClient(client.get());
+        obj.setDumpster(req.get().getDumpster());
         obj.getDumpster().setStatusid(1);
         obj.getDumpster().setStatus(Set.of(1));
         Request request = findById(id);
         request = mapper.map(obj, Request.class);
-        //request.setDumpster(obj.getDumpster());
-        //request.getDumpster(obj.getDumpster());
+//        request.setSize(obj.getSize());
+//        request.setAddress(obj.getAddress());
+//        request.setAddressnum(obj.getAddressnum());
+//        request.setTypetrash(obj.getTypetrash());
+//        request.setDateinit(obj.getDateinit());
+//        request.setDatefinal(obj.getDatefinal());
+//        request.setClient(obj.getClient());
+//        request.setDumpster(obj.getDumpster());
         return repository.save(request);
     }
 

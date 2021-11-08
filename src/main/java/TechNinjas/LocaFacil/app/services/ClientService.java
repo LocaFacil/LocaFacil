@@ -127,6 +127,50 @@ public class ClientService {
         client.setPassword(obj.getPassword());
         return repository.save(client);
     }
+
+    public Boolean checktermsUser(Integer id) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> client = repository.findByEmail(email);
+        if(client.isPresent()) {
+            if(!id.equals(client.get().getId())) {
+                throw new AuthorizationException("Acesso negado!");
+            }else{
+                try{
+                    if(!client.get().getTermsUse().equals(null)){
+                       return true;
+                    }else {
+                       return false;
+                    }
+                }catch (Exception e){
+                    //System.out.println("error: " + e);
+                }
+            }
+        }
+        return false;
+    }
+
+    public Client updatetermsCheck(Integer id, @Valid Client obj) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> clientrecap = repository.findByEmail(email);
+        obj.setId(id);
+        obj.setName(clientrecap.get().getName());
+        obj.setEmail(clientrecap.get().getEmail());
+        obj.setPassword(clientrecap.get().getPassword());
+        obj.setCpf(clientrecap.get().getCpf());
+        obj.setPhone(clientrecap.get().getPhone());
+        obj.setAddress(clientrecap.get().getAddress());
+        obj.setAddressnum(clientrecap.get().getAddressnum());
+        Client client = findById(id);
+        client = mapper.map(obj, Client.class);
+        client.setName(obj.getName());
+        client.setEmail(obj.getEmail());
+        client.setPassword(obj.getPassword());
+        client.setCpf(obj.getCpf());
+        client.setPhone(obj.getPhone());
+        client.setAddress(obj.getAddress());
+        client.setAddressnum(obj.getAddressnum());
+        return repository.save(client);
+    }
 }
 
 

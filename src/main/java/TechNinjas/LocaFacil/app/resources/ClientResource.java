@@ -142,4 +142,28 @@ public class ClientResource {
         Client newObj = service.updateCheck(id, obj);
         return ResponseEntity.ok().body(new ClientDTO(newObj));
     }
+
+    @ApiOperation(value = "Terms Use check user by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Check termsuse user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @GetMapping(value = "/checktermsuse/{id}")
+    public ResponseEntity<Boolean> termsuseCheck(@PathVariable Integer id) {
+        Boolean client = service.checktermsUser(id);
+        return ResponseEntity.ok().body(client);
+    }
+
+    @ApiOperation(value = "Update Terms Use user by id left check")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Updated termsuse user"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @PutMapping(value = "/checktermsuse/{id}")
+    public ResponseEntity<ClientDTO> termsuseCheck(@PathVariable Integer id, @Valid @RequestBody Client obj) {
+        Client newObj = service.updatetermsCheck(id, obj);
+        return ResponseEntity.ok().body(new ClientDTO(newObj));
+    }
 }

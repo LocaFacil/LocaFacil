@@ -18,4 +18,10 @@ public interface DumpsterRepository extends JpaRepository <Dumpster, Integer>{
 
     @Query("select d from Tb_Dumpster d where d.statusid=1")
     List<Dumpster> getDumpsterByStatusId();
+
+    @Query("select d from Tb_Dumpster d where d.statusid=1 and d.size=2")
+    List<Dumpster> getDumpsterByStatusIdAndSizeBig();
+
+    @Query("select d from Tb_Dumpster d where d.statusid=1 and d.size=1")
+    List<Dumpster> getDumpsterByStatusIdAndSizeSmall();
 }

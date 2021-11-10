@@ -15,6 +15,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Api("Dumpster Request System")
 @RestController
@@ -34,10 +36,22 @@ public class RequestResource {
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @GetMapping(value = "/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> findById(@PathVariable Integer id) {
         Request req = service.findById(id);
         return ResponseEntity.ok().body(new RequestDTO(req));
+    }
+
+    @ApiOperation(value = "Find requests by client id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "found requests"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @GetMapping(value = "/all/{id}")
+    public ResponseEntity<List<RequestDTO>> findAllClientById(@PathVariable Integer id) {
+        List<Request> list = service.findAllClientById(id);
+        List<RequestDTO> listDTO = list.stream().map(obj -> new RequestDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 
     @ApiOperation(value = "Create request")
@@ -63,7 +77,7 @@ public class RequestResource {
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @PutMapping(value = "/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> update(@PathVariable Integer id, @Valid @RequestBody Request obj) {
         Request newObj = service.update(id, obj);
         return ResponseEntity.ok().body(new RequestDTO(newObj));
@@ -82,10 +96,28 @@ public class RequestResource {
         return ResponseEntity.noContent().build();
     }
 
+    @ApiOperation(value = "Liberate Dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Liberated dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
     @PutMapping(value = "/dumpsterLiberate/{id}")
-    //@PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> liberateUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj) {
         Request newObj = service.liberateUpdate(id, obj);
+        return ResponseEntity.ok().body(new RequestDTO(newObj));
+    }
+
+    @ApiOperation(value = "Deliver Dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Delivered dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @PutMapping(value = "/deliverUpdate/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<RequestDTO> deliverUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj){
+        Request newObj = service.deliverUpdate(id, obj);
         return ResponseEntity.ok().body(new RequestDTO(newObj));
     }
 }

@@ -120,4 +120,17 @@ public class RequestResource {
         Request newObj = service.deliverUpdate(id, obj);
         return ResponseEntity.ok().body(new RequestDTO(newObj));
     }
+
+    @ApiOperation(value = "Retreat Dumpster by id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Retreated dumpster"),
+            @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
+            @ApiResponse(code = 500, message = "An exception was generated"),
+    })
+    @PutMapping(value = "/retreatUpdate/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<RequestDTO> retreatUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj){
+        Request newObj = service.retreatUpdate(id, obj);
+        return ResponseEntity.ok().body(new RequestDTO(newObj));
+    }
 }

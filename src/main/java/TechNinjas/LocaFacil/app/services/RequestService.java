@@ -150,4 +150,26 @@ public class RequestService {
         return null;
     }
 
+    public Request retreatUpdate(Integer id, @Valid Request obj){
+        Optional<Request> req = repository.findById(id);
+        try{
+            obj.setId(id);
+            obj.setSize(req.get().getSize());
+            obj.setAddress(req.get().getAddress());
+            obj.setAddressnum(req.get().getAddressnum());
+            obj.setTypetrash(req.get().getTypetrash());
+            obj.setDateinit(req.get().getDateinit());
+            obj.setDatefinal(req.get().getDatefinal());
+            obj.setClient(req.get().getClient());
+            obj.setDumpster(req.get().getDumpster());
+            obj.getDumpster().setStatusid(1);
+            obj.getDumpster().setStatus(Set.of(1));
+            Request request = findById(id);
+            request = mapper.map(obj, Request.class);
+            return repository.save(request);
+        }catch (Exception e){
+            System.out.println("Erro: " + e);
+        }
+        return null;
+    }
 }

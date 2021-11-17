@@ -19,4 +19,7 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
 
     @Query("select d from Tb_Request d where d.clientidois=:p")
     List<Request> findAllClientById(@Param("p") Integer id);
+
+    //@Query("select d from Tb_Request d where d")
+    List<Request> findAllDeliversAndRetreat();
 }

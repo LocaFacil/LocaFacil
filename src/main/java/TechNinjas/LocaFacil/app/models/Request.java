@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Date;
 
@@ -36,12 +35,12 @@ public class Request implements Serializable {
     private String typetrash;
 
     @ApiModelProperty(value = "Request Date Init")
-    @NotNull(message = "Date init field is required")
+    //@NotNull(message = "Date init field is required")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date dateinit;
 
     @ApiModelProperty(value = "Request Final Date")
-    @NotNull(message = "Date final field is required")
+    //@NotNull(message = "Date final field is required")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date datefinal;
 

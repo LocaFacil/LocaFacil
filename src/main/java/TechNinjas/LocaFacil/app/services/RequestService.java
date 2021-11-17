@@ -14,10 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class RequestService {
@@ -53,6 +51,7 @@ public class RequestService {
         Optional<Client> client = clientRepository.findByEmail(email);
         request.setId(null);
         request.setClient(client.get());
+        request.setDatefinal(java.sql.Date.valueOf(request.getDateinit().toLocalDate().plusDays(9)));
         if(request.getSize() == 1){
             List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusIdAndSizeSmall();
             try{
@@ -93,10 +92,37 @@ public class RequestService {
     }
 
     public Request update(Integer id, @Valid Request obj) {
-        obj.setId(id);
-        Request request = findById(id);
-        request = mapper.map(obj, Request.class);
-        return repository.save(request);
+        Optional<Request> req = repository.findById(id);
+        Date date = new Date(System.currentTimeMillis());
+        java.sql.Date datePresent = new java.sql.Date(date.getTime());
+
+        try{
+            obj.setId(id);
+            obj.setSize(req.get().getSize());
+            obj.setAddress(req.get().getAddress());
+            obj.setAddressnum(req.get().getAddressnum());
+            obj.setTypetrash(req.get().getTypetrash());
+            obj.setDateinit(req.get().getDateinit());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date date1 = sdf.parse(String.valueOf(req.get().getDatefinal()));
+            Date date2 = sdf.parse(String.valueOf(datePresent));
+            int result = date2.compareTo(date1);
+            if(result==0){
+                obj.setDatefinal(java.sql.Date.valueOf(req.get().getDatefinal().toLocalDate().plusDays(9)));
+                obj.setClient(req.get().getClient());
+                obj.setDumpster(req.get().getDumpster());
+                obj.getDumpster().setStatusid(4);
+                obj.getDumpster().setStatus(Set.of(4));
+                Request request = findById(id);
+                request = mapper.map(obj, Request.class);
+                return repository.save(request);
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+            System.out.println("Erro: " + e);
+        }
+        return null;
     }
 
     public void delete(Integer id) {
@@ -171,5 +197,9 @@ public class RequestService {
             System.out.println("Erro: " + e);
         }
         return null;
+    }
+
+    public List<Request> findAllDeliversAndRetreat(){
+        return repository.findAllDeliversAndRetreat();
     }
 }

@@ -77,7 +77,6 @@ public class RequestResource {
             @ApiResponse(code = 500, message = "An exception was generated"),
     })
     @PutMapping(value = "/{id}")
-    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> update(@PathVariable Integer id, @Valid @RequestBody Request obj) {
         Request newObj = service.update(id, obj);
         return ResponseEntity.ok().body(new RequestDTO(newObj));
@@ -132,5 +131,13 @@ public class RequestResource {
     public ResponseEntity<RequestDTO> retreatUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj){
         Request newObj = service.retreatUpdate(id, obj);
         return ResponseEntity.ok().body(new RequestDTO(newObj));
+    }
+
+    @GetMapping(value = "/lists/")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public ResponseEntity<List<RequestDTO>> listDeliverAndRetreat() {
+        List<Request> list = service.findAllDeliversAndRetreat();
+        List<RequestDTO> listDTO = list.stream().map(obj -> new RequestDTO(obj)).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
     }
 }

@@ -52,6 +52,7 @@ public class RequestService {
         request.setId(null);
         request.setClient(client.get());
         request.setDatefinal(java.sql.Date.valueOf(request.getDateinit().toLocalDate().plusDays(9)));
+        request.setStatusid(1);
         if(request.getSize() == 1){
             List<Dumpster> dumpster = dumpsterRepository.getDumpsterByStatusIdAndSizeSmall();
             try{
@@ -113,6 +114,7 @@ public class RequestService {
                 obj.setDumpster(req.get().getDumpster());
                 obj.getDumpster().setStatusid(4);
                 obj.getDumpster().setStatus(Set.of(4));
+                obj.setStatusid(2);
                 Request request = findById(id);
                 request = mapper.map(obj, Request.class);
                 return repository.save(request);
@@ -144,6 +146,7 @@ public class RequestService {
             obj.setDumpster(req.get().getDumpster());
             obj.getDumpster().setStatusid(4);
             obj.getDumpster().setStatus(Set.of(4));
+            obj.setStatusid(4);
             Request request = findById(id);
             request = mapper.map(obj, Request.class);
             return repository.save(request);
@@ -167,6 +170,7 @@ public class RequestService {
             obj.setDumpster(req.get().getDumpster());
             obj.getDumpster().setStatusid(2);
             obj.getDumpster().setStatus(Set.of(2));
+            obj.setStatusid(2);
             Request request = findById(id);
             request = mapper.map(obj, Request.class);
             return repository.save(request);
@@ -190,6 +194,7 @@ public class RequestService {
             obj.setDumpster(req.get().getDumpster());
             obj.getDumpster().setStatusid(1);
             obj.getDumpster().setStatus(Set.of(1));
+            obj.setStatusid(3);
             Request request = findById(id);
             request = mapper.map(obj, Request.class);
             return repository.save(request);
@@ -200,6 +205,6 @@ public class RequestService {
     }
 
     public List<Request> findAllDeliversAndRetreat(){
-        return repository.findAllDeliversAndRetreat();
+        return repository.findAllRequestByStatus();
     }
 }

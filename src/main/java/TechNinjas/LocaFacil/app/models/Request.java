@@ -54,10 +54,15 @@ public class Request implements Serializable {
     @JoinColumn(name = "dumpster_id", referencedColumnName = "id")
     private Dumpster dumpster;
 
-    public Request() {
+    @ApiModelProperty(value = "Request Status")
+    private Integer statusid;
+    //1-Waiting, 2-Busy, 3-Closed, 4-Release
+
+    public Request(){
+
     }
 
-    public Request(Integer id, Integer size, String address, Integer addressnum , String typetrash, Date dateinit, Date datefinal, Client client, Dumpster dumpster) {
+    public Request(Integer id, Integer size, String address, Integer addressnum , String typetrash, Date dateinit, Date datefinal, Client client, Dumpster dumpster, Integer statusid) {
         this.id = id;
         this.size = size;
         this.address = address;
@@ -67,6 +72,7 @@ public class Request implements Serializable {
         this.datefinal = datefinal;
         this.client = client;
         this.dumpster = dumpster;
+        this.statusid = statusid;
     }
 
     @Column(name = "client_id", insertable = false, updatable = false)
@@ -85,6 +91,6 @@ public class Request implements Serializable {
         this.datefinal = obj.getDatefinal();
         this.clientidois = obj.getClientid();
         this.dumpsteridois = obj.getDumpsterid();
+        this.statusid = obj.getStatusid();
     }
-
 }

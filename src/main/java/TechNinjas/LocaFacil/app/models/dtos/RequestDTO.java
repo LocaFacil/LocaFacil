@@ -25,6 +25,7 @@ public class RequestDTO implements Serializable {
     private Date datefinal;
     private Integer clientid;
     private Integer dumpsterid;
+    private Integer statusid;
 
     public RequestDTO(Request obj) {
         this.id = obj.getId();
@@ -36,5 +37,6 @@ public class RequestDTO implements Serializable {
         this.datefinal = obj.getDatefinal();
         this.clientid = obj.getClient().getId();
         this.dumpsterid = obj.getDumpster().getId();
+        this.statusid = obj.getStatusid();
     }
 }

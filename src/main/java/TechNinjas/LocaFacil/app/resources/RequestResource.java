@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 public class RequestResource {
 
     @Autowired
-    RequestRepository repository;
+    RequestRepository requestRepository;
 
     @Autowired
     RequestService service;
@@ -133,7 +133,7 @@ public class RequestResource {
         return ResponseEntity.ok().body(new RequestDTO(newObj));
     }
 
-    @GetMapping(value = "/lists/")
+    @GetMapping(value = "/lists")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<RequestDTO>> listDeliverAndRetreat() {
         List<Request> list = service.findAllDeliversAndRetreat();

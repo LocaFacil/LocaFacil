@@ -106,7 +106,6 @@ public class ClientService {
                         }
                     }
                 }catch (Exception e){
-                    //System.out.println("error: " + e);
                 }
             }
         }
@@ -142,7 +141,6 @@ public class ClientService {
                        return false;
                     }
                 }catch (Exception e){
-                    //System.out.println("error: " + e);
                 }
             }
         }

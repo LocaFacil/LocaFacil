@@ -9,7 +9,6 @@ public class UserService {
         try {
             return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
-        //O erro bate aqui na exception, na causa diz que tem algo haver com bootstrap
         catch (Exception e) {
             return null;
         }

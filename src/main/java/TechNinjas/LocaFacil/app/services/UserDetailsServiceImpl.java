@@ -25,10 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private CompanyRepository companyRepository;
 
-    // Localiza o usuário com base no nome de usuário
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        //Vou ter que fazer separação empresa e cliente
         Optional<Client> user = repository.findByEmail(email);
         Optional<Company> userCompany = companyRepository.findByEmail(email);
 

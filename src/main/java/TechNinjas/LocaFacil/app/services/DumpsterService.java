@@ -70,16 +70,6 @@ public class DumpsterService {
         //Set<String> status = new HashSet<String>(Arrays.asList(stat));
         return repository.getDumpsterByStatus(statusid);
     }
-
-    //Classe para fazer verificação para ver se é uma caçamba livre antes de locar
-
-    //Classe que ira atualizar o status da caçamba locada
-//    public Dumpster updateForRequest(Integer id, @Valid Dumpster obj){
-//        obj.setId(id);
-//        Dumpster dump = findById(id);
-//        dump = mapper.map(obj, Dumpster.class);
-//        return repository.save(dump);
-//    }
 }
 
 

@@ -50,7 +50,6 @@ public class DumpsterResource {
     @PostMapping("/create")
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> create(@Valid @RequestBody Dumpster dumpster) {
-        //Vou ter que vincular o id da conta empresa conectada com a caçamba criada
         Dumpster dump = service.create(dumpster);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -80,24 +79,11 @@ public class DumpsterResource {
             @RequestParam(value = "price", required = false) Double price,
             @RequestParam(value = "size", required = false) Integer size,
             @RequestParam(value = "company_id", required = false) Integer company_id){
-        //System.out.println("dumpster"+companyid);
         return this.dumpsterCustomRepository.find(id, price, size, company_id)
-        //return this.dumpsterRepository.findBySizeContains(size)
                 .stream()
                 .map(obj -> new DumpsterDTO(obj))
                 .collect(Collectors.toList());
     }
-
-//    @GetMapping(value = "/status")
-//    public List<DumpsterDTO> findDumpsterByStatus(
-//            @RequestParam(value = "tb_dumpster_id", required = false) Integer tb_dumpster_id){
-//            //@RequestParam(value = "status", required = false) Integer status){
-//        return this.dumpsterStatusRepository.find(tb_dumpster_id)
-//                //return this.dumpsterRepository.findBySizeContains(size)
-//                .stream()
-//                .map(obj -> new DumpsterDTO(obj))
-//                .collect(Collectors.toList());
-//    }
 
     @GetMapping(value = "/status/{statusid}")
     @PreAuthorize("hasAnyRole('ADMIN')")
@@ -107,7 +93,6 @@ public class DumpsterResource {
         return ResponseEntity.ok().body(listDTO);
     }
 
-    //Remover esta função, o qual qualquer empresa consegue puxar caçamba de outras
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<List<DumpsterDTO>> findAll() {

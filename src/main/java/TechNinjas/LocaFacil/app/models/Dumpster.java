@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-//@AllArgsConstructor
 @Entity(name = "Tb_Dumpster")
 public class Dumpster implements Serializable {
     private static final Long SerialVersionUID = 1L;
@@ -23,7 +22,6 @@ public class Dumpster implements Serializable {
     private Integer id;
 
     @ApiModelProperty(value = "Dumpster Size")
-    // 1 - medio 2 - grande
     private Integer size;
 
     @ApiModelProperty(value = "Dumpster Price")
@@ -39,12 +37,11 @@ public class Dumpster implements Serializable {
     @ElementCollection(fetch = FetchType.LAZY)
     @CollectionTable(name = "Status")
     private Set<Integer> status = new HashSet<>();
-    // 1 - livre, 2 - ocupada
 
+    @ApiModelProperty(value = "Dumpster Status Id")
     @Column(name = "statusid")
     private Integer statusid;
 
-    //private Integer request;
     public Dumpster(){
         addStatus(Status.AVAILABLE);
     }
@@ -59,7 +56,7 @@ public class Dumpster implements Serializable {
     }
 
     @Column(name = "company_id", insertable = false, updatable = false)
-    private /*transient*/ Integer companyidois;
+    private Integer companyidois;
 
     public Dumpster(DumpsterDTO obj){
         this.id = obj.getId();

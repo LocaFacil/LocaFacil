@@ -28,19 +28,14 @@ public class Request implements Serializable {
     @ApiModelProperty(value = "Request Address Number")
     private Integer addressnum;
 
-    //@ApiModelProperty(value = "Request Delivery Date")
-    //private Date deliverydate;
-
     @ApiModelProperty(value = "Request TypeTrash Dumpster")
     private String typetrash;
 
     @ApiModelProperty(value = "Request Date Init")
-    //@NotNull(message = "Date init field is required")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date dateinit;
 
     @ApiModelProperty(value = "Request Final Date")
-    //@NotNull(message = "Date final field is required")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", locale = "pt-BR", timezone = "Brazil/East")
     private Date datefinal;
 

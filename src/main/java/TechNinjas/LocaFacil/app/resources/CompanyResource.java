@@ -27,12 +27,6 @@ public class CompanyResource {
     @Autowired
     private CompanyRepository repository;
 
-    /**
-     * Cria um novo Usuario
-     * @param obj
-     * @return URI
-     * @return CompanyDTO
-     */
     @ApiOperation(value = "Create a new company-type user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Created a new company-type user"),

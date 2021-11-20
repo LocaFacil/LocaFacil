@@ -62,31 +62,20 @@ public class Client implements Serializable {
     @ApiModelProperty(value = "Terms Use")
     private Boolean termsUse;
 
-    //Definição de tipo de usuario
     @ApiModelProperty(value = "User Type")
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "Profiles")
     private Set<Integer> profiles = new HashSet<>();
 
-    //@ApiModelProperty(value = "User Reset Password")
-    //@Column(name = "reset_password_token")
-    //private String resetPasswordToken;
-
-    //@ApiModelProperty(value = "User Requests")
-    //@OneToOne
-    //private Request request;
-
-    //Ver depois
     public Client() {
         addProfile(Profile.USER);
     }
 
-    public Client(Integer id, String name, String email, String password/*,String cpf, String phone*/) {
+    public Client(Integer id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
-        //Setando o ususario como usuario normal
         addProfile(Profile.USER);
     }
 
@@ -111,7 +100,9 @@ public class Client implements Serializable {
         profiles.add(profile.getCod());
     }
 
+    /*
     public Set<Profile> getIdProfiles() {
         return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
     }
+     */
 }

@@ -29,11 +29,6 @@ public class ClientResource {
     @Autowired
     private ClientRepository repository;
 
-    /**
-     * Busca um Usuario pelo id
-     * @param id
-     * @return UsuarioDTO
-     */
     @ApiOperation(value = "Find user by id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Finded user"),
@@ -44,13 +39,13 @@ public class ClientResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> findById(@PathVariable Integer id) {
         Client client = service.findById(id);
-        return ResponseEntity.ok().body(new ClientDTO(client));
+        if(client != null){
+            return ResponseEntity.ok().body(new ClientDTO(client));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
-    /**
-     * Lista todos os Usuarios do banco
-     * @return List<UsuarioDTO>
-     */
     @ApiOperation(value = "Return user list")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Returned user list"),
@@ -62,15 +57,13 @@ public class ClientResource {
     public ResponseEntity<List<ClientDTO>> findAll() {
         List<Client> list = service.findAll();
         List<ClientDTO> listDTO = list.stream().map(obj -> new ClientDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(list != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
     }
 
-    /**
-     * Cria um novo Usuario
-     * @param obj
-     * @return URI
-     * @return UsuarioDTO
-     */
     @ApiOperation(value = "Create a new user")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Created the user"),
@@ -80,15 +73,13 @@ public class ClientResource {
     @PostMapping("/createuser")
     public ResponseEntity<ClientDTO> create(@Valid @RequestBody Client obj) {
         Client client = service.create(obj);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        if(client != null){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
-    /**
-     * Atualiza um Usuario
-     * @param id
-     * @param obj
-     * @return usuarioDTO
-     */
     @ApiOperation(value = "Update user by id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Updated user"),
@@ -98,14 +89,13 @@ public class ClientResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<ClientDTO> update(@PathVariable Integer id, @Valid @RequestBody Client obj) {
     	Client newObj = service.update(id, obj);
-    	return ResponseEntity.ok().body(new ClientDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new ClientDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
-    /**
-     * Deleta um Usuario por id
-      * @param id do Usuario a ser deletado
-     * @return noContent
-     */
     @ApiOperation(value = "Delete user by id")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Deleted user"),
@@ -128,7 +118,11 @@ public class ClientResource {
     @GetMapping(value = "/check/{id}")
     public ResponseEntity<Boolean> checkUser(@PathVariable Integer id){
         Boolean client = service.checkUser(id);
-        return ResponseEntity.ok().body(client);
+        if(client != null){
+            return ResponseEntity.ok().body(client);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Update user by id left check")
@@ -140,7 +134,11 @@ public class ClientResource {
     @PutMapping(value = "/check/{id}")
     public ResponseEntity<ClientDTO> updateCheck(@PathVariable Integer id, @Valid @RequestBody Client obj) {
         Client newObj = service.updateCheck(id, obj);
-        return ResponseEntity.ok().body(new ClientDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new ClientDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Terms Use check user by id")
@@ -152,7 +150,11 @@ public class ClientResource {
     @GetMapping(value = "/checktermsuse/{id}")
     public ResponseEntity<Boolean> termsuseCheck(@PathVariable Integer id) {
         Boolean client = service.checktermsUser(id);
-        return ResponseEntity.ok().body(client);
+        if(client != null){
+            return ResponseEntity.ok().body(client);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Update Terms Use user by id left check")
@@ -164,6 +166,10 @@ public class ClientResource {
     @PutMapping(value = "/checktermsuse/{id}")
     public ResponseEntity<ClientDTO> termsuseCheck(@PathVariable Integer id, @Valid @RequestBody Client obj) {
         Client newObj = service.updatetermsCheck(id, obj);
-        return ResponseEntity.ok().body(new ClientDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new ClientDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

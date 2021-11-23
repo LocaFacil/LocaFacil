@@ -36,7 +36,11 @@ public class CompanyResource {
     @PostMapping("/createcompany")
     public ResponseEntity<CompanyDTO> create(@Valid @RequestBody Company obj) {
         Company company = service.create(obj);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        if(company != null){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Find user by id")
@@ -48,7 +52,11 @@ public class CompanyResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<CompanyDTO> findById(@PathVariable Integer id) {
         Company company = service.findById(id);
-        return ResponseEntity.ok().body(new CompanyDTO(company));
+        if(company != null){
+            return ResponseEntity.ok().body(new CompanyDTO(company));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ApiOperation(value = "Update user by id")
@@ -60,7 +68,11 @@ public class CompanyResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<CompanyDTO> update(@PathVariable Integer id, @Valid @RequestBody Company obj) {
         Company newObj = service.update(id, obj);
-        return ResponseEntity.ok().body(new CompanyDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new CompanyDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Delete user by id")

@@ -51,14 +51,22 @@ public class DumpsterService {
         Optional<Company> company = companyRepository.findByEmail(email);
         dump.setId(null);
         dump.setCompany(company.get());
-        return repository.save(dump);
+        if(!dump.getSize().equals(null) && !dump.getStatusid().equals(null) && !dump.getCompany().equals(null)){
+            return repository.save(dump);
+        }else{
+            return null;
+        }
     }
 
     public Dumpster update(Integer id, @Valid Dumpster obj) {
         obj.setId(id);
         Dumpster dump = findById(id);
         dump = mapper.map(obj, Dumpster.class);
-        return repository.save(dump);
+        if(!dump.getSize().equals(null) && !dump.getStatusid().equals(null) && !dump.getCompany().equals(null)){
+            return repository.save(dump);
+        }else{
+            return null;
+        }
     }
 
     public void delete(Integer id) {

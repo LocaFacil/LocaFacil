@@ -15,7 +15,7 @@ public class DumpsterCustomRepository {
         this.em = em;
     }
 
-    public List<Dumpster> find(Integer id, Double price, Integer size, Integer company_id) {
+    public List<Dumpster> find(Integer id, Double price, Integer size, Integer company_id, Integer statusid) {
 
         String query = "select P from Tb_Dumpster as P ";
         String condicao = "where";
@@ -37,6 +37,11 @@ public class DumpsterCustomRepository {
 
         if(company_id != null) {
             query += condicao + " P.companyidois = :companyidois";
+            condicao = " and ";
+        }
+
+        if(statusid != null){
+            query += condicao + " P.statusid = :statusid";
         }
 
         var q = em.createQuery(query, Dumpster.class);
@@ -55,6 +60,10 @@ public class DumpsterCustomRepository {
 
         if(company_id != null) {
             q.setParameter("companyidois", company_id);
+        }
+
+        if(statusid != null){
+            q.setParameter("statusid", statusid);
         }
 
         return q.getResultList();

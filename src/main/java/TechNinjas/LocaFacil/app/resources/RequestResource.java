@@ -38,7 +38,11 @@ public class RequestResource {
     @GetMapping(value = "/{id}")
     public ResponseEntity<RequestDTO> findById(@PathVariable Integer id) {
         Request req = service.findById(id);
-        return ResponseEntity.ok().body(new RequestDTO(req));
+        if(req != null){
+            return ResponseEntity.ok().body(new RequestDTO(req));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ApiOperation(value = "Find requests by client id")
@@ -51,7 +55,11 @@ public class RequestResource {
     public ResponseEntity<List<RequestDTO>> findAllClientById(@PathVariable Integer id) {
         List<Request> list = service.findAllClientById(id);
         List<RequestDTO> listDTO = list.stream().map(obj -> new RequestDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(list != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ApiOperation(value = "Create request")
@@ -79,7 +87,11 @@ public class RequestResource {
     @PutMapping(value = "/{id}")
     public ResponseEntity<RequestDTO> update(@PathVariable Integer id, @Valid @RequestBody Request obj) {
         Request newObj = service.update(id, obj);
-        return ResponseEntity.ok().body(new RequestDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new RequestDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Delete request by id")
@@ -104,7 +116,11 @@ public class RequestResource {
     @PutMapping(value = "/dumpsterLiberate/{id}")
     public ResponseEntity<RequestDTO> liberateUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj) {
         Request newObj = service.liberateUpdate(id, obj);
-        return ResponseEntity.ok().body(new RequestDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new RequestDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Deliver Dumpster by id")
@@ -117,7 +133,11 @@ public class RequestResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> deliverUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj){
         Request newObj = service.deliverUpdate(id, obj);
-        return ResponseEntity.ok().body(new RequestDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new RequestDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Retreat Dumpster by id")
@@ -130,7 +150,11 @@ public class RequestResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<RequestDTO> retreatUpdate(@PathVariable Integer id, @Valid @RequestBody Request obj){
         Request newObj = service.retreatUpdate(id, obj);
-        return ResponseEntity.ok().body(new RequestDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new RequestDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping(value = "/lists")
@@ -138,6 +162,10 @@ public class RequestResource {
     public ResponseEntity<List<RequestDTO>> listDeliverAndRetreat() {
         List<Request> list = service.findAllDeliversAndRetreat();
         List<RequestDTO> listDTO = list.stream().map(obj -> new RequestDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(list != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 }

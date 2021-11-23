@@ -54,7 +54,11 @@ public class ClientService {
     public Client create(Client obj) {
         obj.setId(null);
         obj.setPassword(encoder.encode(obj.getPassword()));
-        return repository.save(obj);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()){
+            return repository.save(obj);
+        }else{
+            return null;
+        }
     }
 
 	public Client update(Integer id, @Valid Client obj) {
@@ -62,7 +66,11 @@ public class ClientService {
         Client client = findById(id);
         client = mapper.map(obj, Client.class);
         client.setPassword(encoder.encode(obj.getPassword()));
-        return repository.save(client);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()){
+            return repository.save(client);
+        }else{
+            return null;
+        }
 	}
 
     public void delete(Integer id) {
@@ -124,7 +132,12 @@ public class ClientService {
         client.setName(obj.getName());
         client.setEmail(obj.getEmail());
         client.setPassword(obj.getPassword());
-        return repository.save(client);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank() && !obj.getCpf().isBlank()
+                && !obj.getPhone().isBlank() && !obj.getAddress().isBlank() && !obj.getAddressnum().equals(null)){
+            return repository.save(client);
+        }else{
+            return null;
+        }
     }
 
     public Boolean checktermsUser(Integer id) {
@@ -167,7 +180,13 @@ public class ClientService {
         client.setPhone(obj.getPhone());
         client.setAddress(obj.getAddress());
         client.setAddressnum(obj.getAddressnum());
-        return repository.save(client);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()
+                && !obj.getCpf().isBlank() && !obj.getPhone().isBlank() && !obj.getAddress().isBlank()
+                && !obj.getAddressnum().equals(null) && !obj.getTermsUse().equals(null)){
+            return repository.save(client);
+        }else{
+            return null;
+        }
     }
 }
 

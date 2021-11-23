@@ -49,7 +49,12 @@ public class CompanyService {
     public Company create(Company obj) {
         obj.setId(null);
         obj.setPassword(encoder.encode(obj.getPassword()));
-        return repository.save(obj);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()
+                && !obj.getCnpj().isBlank() && !obj.getPhone().isBlank()){
+            return repository.save(obj);
+        }else{
+            return null;
+        }
     }
 
     public Company update(Integer id, @Valid Company obj) {
@@ -57,7 +62,12 @@ public class CompanyService {
         Company company = findById(id);
         company = mapper.map(obj, Company.class);
         company.setPassword(encoder.encode(obj.getPassword()));
-        return repository.save(company);
+        if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()
+                && !obj.getCnpj().isBlank() && !obj.getPhone().isBlank()){
+            return repository.save(obj);
+        }else{
+            return null;
+        }
     }
 
     public void delete(Integer id) {

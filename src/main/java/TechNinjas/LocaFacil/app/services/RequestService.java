@@ -62,9 +62,14 @@ public class RequestService {
                 request.setDumpster(dump3.get(0));
                 request.getDumpster().setStatusid(3);
                 request.getDumpster().setStatus(Set.of(3));
-                return repository.save(request);
+                if(!request.getSize().equals(null)&& !request.getAddress().isBlank() && !request.getAddressnum().equals(null)
+                        && !request.getTypetrash().isBlank() && !request.getDateinit().equals(null)
+                        && !request.getStatusid().equals(null)) {
+                    return repository.save(request);
+                }else{
+                    return null;
+                }
             }catch (Exception e){
-                System.out.println(e);
                 return null;
             }
         }else{
@@ -76,7 +81,13 @@ public class RequestService {
                 request.setDumpster(dump3.get(0));
                 request.getDumpster().setStatusid(3);
                 request.getDumpster().setStatus(Set.of(3));
-                return repository.save(request);
+                if(!request.getSize().equals(null)&& !request.getAddress().isBlank() && !request.getAddressnum().equals(null)
+                        && !request.getTypetrash().isBlank() && !request.getDateinit().equals(null)
+                        && !request.getStatusid().equals(null)) {
+                    return repository.save(request);
+                }else{
+                    return null;
+                }
             }catch (Exception e){
                 System.out.println(e);
                 return null;

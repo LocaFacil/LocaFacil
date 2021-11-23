@@ -51,7 +51,11 @@ public class DumpsterResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> create(@Valid @RequestBody Dumpster dumpster) {
         Dumpster dump = service.create(dumpster);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        if(dump != null){
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Find dumpster by id")
@@ -64,7 +68,11 @@ public class DumpsterResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> findById(@PathVariable Integer id) {
         Dumpster dump = service.findById(id);
-        return ResponseEntity.ok().body(new DumpsterDTO(dump));
+        if(dump != null){
+            return ResponseEntity.ok().body(new DumpsterDTO(dump));
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ApiOperation(value = "Find dumpster by filter")
@@ -78,8 +86,9 @@ public class DumpsterResource {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam(value = "price", required = false) Double price,
             @RequestParam(value = "size", required = false) Integer size,
-            @RequestParam(value = "company_id", required = false) Integer company_id){
-        return this.dumpsterCustomRepository.find(id, price, size, company_id)
+            @RequestParam(value = "company_id", required = false) Integer company_id,
+            @RequestParam(value = "statusid", required = false) Integer statusid){
+        return this.dumpsterCustomRepository.find(id, price, size, company_id, statusid)
                 .stream()
                 .map(obj -> new DumpsterDTO(obj))
                 .collect(Collectors.toList());
@@ -90,7 +99,11 @@ public class DumpsterResource {
     public ResponseEntity<List<DumpsterDTO>> getDumpsterByStatus(@PathVariable Integer statusid) {
         List<Dumpster> dumplist = service.getDumpsterByStatus(statusid);
         List<DumpsterDTO> listDTO = dumplist.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(dumplist != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping
@@ -98,7 +111,11 @@ public class DumpsterResource {
     public ResponseEntity<List<DumpsterDTO>> findAll() {
         List<Dumpster> list = service.findAll();
         List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(list != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @GetMapping(value = "/status/available")
@@ -106,7 +123,11 @@ public class DumpsterResource {
     public ResponseEntity<List<DumpsterDTO>> findAllStatus() {
         List<Dumpster> list = dumpsterRepository.getDumpsterByStatusId();
         List<DumpsterDTO> listDTO = list.stream().map(obj -> new DumpsterDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+        if(list != null){
+            return ResponseEntity.ok().body(listDTO);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 
     @ApiOperation(value = "Update dumpster by id")
@@ -119,7 +140,11 @@ public class DumpsterResource {
     @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<DumpsterDTO> update(@PathVariable Integer id, @Valid @RequestBody Dumpster obj) {
         Dumpster newObj = service.update(id, obj);
-        return ResponseEntity.ok().body(new DumpsterDTO(newObj));
+        if(newObj != null){
+            return ResponseEntity.ok().body(new DumpsterDTO(newObj));
+        }else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @ApiOperation(value = "Delete dumpster by id")

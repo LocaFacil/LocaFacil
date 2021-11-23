@@ -62,10 +62,14 @@ public class ClientService {
     }
 
 	public Client update(Integer id, @Valid Client obj) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Client> dbclient = repository.findByEmail(email);
         obj.setId(id);
         Client client = findById(id);
         client = mapper.map(obj, Client.class);
         client.setPassword(encoder.encode(obj.getPassword()));
+        client.setName(dbclient.get().getName());
+        client.setEmail(dbclient.get().getEmail());
         if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()){
             return repository.save(client);
         }else{

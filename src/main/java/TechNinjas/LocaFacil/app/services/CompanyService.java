@@ -58,9 +58,15 @@ public class CompanyService {
     }
 
     public Company update(Integer id, @Valid Company obj) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Company> dbcompany = repository.findByEmail(email);
         obj.setId(id);
         Company company = findById(id);
         company = mapper.map(obj, Company.class);
+        company.setName(dbcompany.get().getName());
+        company.setEmail(dbcompany.get().getEmail());
+        company.setPhone(dbcompany.get().getPhone());
+        company.setCnpj(dbcompany.get().getCnpj());
         company.setPassword(encoder.encode(obj.getPassword()));
         if(!obj.getName().isBlank() && !obj.getEmail().isBlank() && !obj.getPassword().isBlank()
                 && !obj.getCnpj().isBlank() && !obj.getPhone().isBlank()){

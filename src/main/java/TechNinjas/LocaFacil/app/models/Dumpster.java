@@ -41,7 +41,7 @@ public class Dumpster implements Serializable {
     @ApiModelProperty(value = "Dumpster Status Id")
     @Column(name = "statusid")
     private Integer statusid;
-    //1-Waiting, 2-Busy, 3-Closed, 4-Release
+    //1-Available, 2-Busy, 3-Waiting, 4-Release
 
     public Dumpster(){
         addStatus(Status.AVAILABLE);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JWTUtil {
@@ -17,36 +18,26 @@ public class JWTUtil {
     @Value("${jwt.expiration}")
     private Long expiration;
 
-    /**
-     * Metodo que irá receber o email e realizar a geração do token
-     * @param email
-     * @return token
-     */
+    @Value("${jwt.refreshExpirationDateInMs}")
+    private int refreshExpirationDateInMs;
+
     public String generateToken(String email) {
         return Jwts.builder()
-
-                // Define o valor de assunto de reivindicações do JWT.
-                // Um valor nulo removerá a propriedade das reivindicações.
                 .setSubject(email)
-
-                // Define o valor de expiração das reivindicações JWT
-                // Um valor nulo removerá a propriedade das reivindicações (claims)
-                // Um JWT obtido após esse carimbo de data/hora não deve ser usado
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-
-                // Assina o JWT construído usando o algoritmo especificado
-                // com a chave especificada, produzindo um JWS
                 .signWith(SignatureAlgorithm.HS512, secret.getBytes())
-
-                // Compacta o corpo do JWT usando o CompressionCodec especificado
-                // deixando a API mais performatica
                 .compact();
     }
 
-    // Metodo usado para verificar se o token passado como parâmetro é válido
+    public String doGenerateRefreshToken(Map<String, Object> claims, String email) {
+        return Jwts.builder()
+                .setClaims(claims).setSubject(email).setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
+                .signWith(SignatureAlgorithm.HS512, secret).compact();
+
+    }
+
     public boolean tokenValido(String token) {
-          
-        // Claims é um tipo do JWT que armazena as reinvindicações do token
         Claims claims = getClaims(token);
         if(claims != null) {
             String username = claims.getSubject();
@@ -60,7 +51,6 @@ public class JWTUtil {
         return false;
     }
 
-    // Metodo usado para pegar as reinvindicações do token
     private Claims getClaims(String token) {
         try{
             return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
@@ -69,7 +59,6 @@ public class JWTUtil {
         }
     }
 
-    // Metodo que irá pegar um usuário a partir do token
     public String getUsername(String token) {
         Claims claims = getClaims(token);
         if(claims != null) {

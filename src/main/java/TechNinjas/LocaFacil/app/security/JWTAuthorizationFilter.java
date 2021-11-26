@@ -34,18 +34,10 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws IOException, ServletException {
-
-        // Primeiro devemos pegar o valor de Athorization que veio no cabeçalho da requisição
         String header = request.getHeader("Authorization");
-        // Verificando se o valor de header faz sentido
         if(header != null && header.startsWith("Bearer ")) {
-            /* Passando na validação vou chamar um metodo que vai verificar a authenticidade do token.
-               Vou passar o token sem o "Bearer " chamando o substring(7) */
             UsernamePasswordAuthenticationToken authToken = getAuthentication(header.substring(7));
-
-            // Se o authToken for diferente de nullo significa que está tudo certo com o token
             if(authToken != null) {
-                // Chamando função para liberar acesso ao filtro
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }

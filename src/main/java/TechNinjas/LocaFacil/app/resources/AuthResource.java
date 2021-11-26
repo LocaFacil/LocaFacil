@@ -23,7 +23,7 @@ public class AuthResource {
 
     @ApiOperation(value = "")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Returned user list"),
+            @ApiResponse(code = 200, message = "Refresh Token"),
             @ApiResponse(code = 403, message = "You do not have permission to access this feature"),
             @ApiResponse(code = 500, message = "An exception was generated"),
     })

@@ -25,11 +25,6 @@ import java.util.Arrays;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    /**
-     * Environment é uma interface que representa o ambiente no qual
-     * o aplicativo atual está sendo executado. Ele pode ser usado
-     * para obter perfis e propriedades do ambiente do aplicativo.
-     */
     @Autowired
     private Environment environment;
 
@@ -45,29 +40,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**", "/webjars/**","/swagger-ui/*","/favicon.ico","/defpassword",
             "/company/defpassword"};
 
-    /**
-     * Qualquer endpoint que requeira defesa
-     * contra vulnerabilidades comuns pode ser
-     * especificado aqui, incluindo as públicas.
-     * @param http
-     * @throws Exception
-     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        /**
-         * Verificando os profiles ativos. Caso o perfil
-         * ativo contenha test o acesso ao h2 será liberado
-         */
         if(Arrays.asList(environment.getActiveProfiles()).contains("test")) {
             http.headers().frameOptions().disable();
         }
 
-        // Habilita as configurações de cors e desabilita a proteção csrf
         http.cors().and().csrf().disable();
-        // Registrando o filtro de authenticação JWT
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
-        // Registrando o filtro de autorização JWT
         http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
         http.authorizeRequests()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
@@ -75,34 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .anyRequest().authenticated();
 
-        // Assegurando que não será criada sessão de usuário
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    /**
-     * Como será usada a autenticação do framework
-     * esse metodo deve ser sobrescrito para informarmos
-     * quem será o UserDetailsService que estamos usando
-     * e quem é o algoritmo de codificação que no caso é
-     * o BCryptPasswordEncoder. Usado pela implementação
-     * padrão de authenticationManager()para tentar obter
-     * um AuthenticationManager
-     * @param auth
-     * @throws Exception
-     */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // A partir do auth eu digo quem é o UserDetailsService
         auth.userDetailsService(userDetailsService)
-                // E digo quem é meu algoritmo de encriptação
                 .passwordEncoder(bCryptPasswordEncoder());
     }
-    /**
-     * Configura o cors para receber requisições
-     * de multiplas fontes
-     *
-     * @return source
-     */
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration().applyPermitDefaultValues();
@@ -112,12 +74,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return source;
     }
 
-    /**
-     * Bean criado para disponibilizar um BCrypt
-     * para encodar a senha do usuario que possa
-     * ser injetado em qualquer classe do sistema
-     * @return new BCryptPasswordEncoder
-     */
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

@@ -90,9 +90,6 @@ public class Company implements Serializable {
         profiles.add(profile.getCod());
     }
 
-//    public Set<Profile> getIdProfiles() {
-//        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
-//    }
 
     public List<Dumpster> getDumpster() {
         return dumpster;

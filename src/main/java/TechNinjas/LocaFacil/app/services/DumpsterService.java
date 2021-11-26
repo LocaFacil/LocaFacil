@@ -59,10 +59,16 @@ public class DumpsterService {
     }
 
     public Dumpster update(Integer id, @Valid Dumpster obj) {
+        String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Optional<Company> company = companyRepository.findByEmail(email);
+        Optional<Dumpster> dumpdb = repository.findById(id);
         obj.setId(id);
         Dumpster dump = findById(id);
         dump = mapper.map(obj, Dumpster.class);
-        if(!dump.getSize().equals(null) && !dump.getStatusid().equals(null) && !dump.getCompany().equals(null)){
+        dump.setStatusid(dumpdb.get().getStatusid());
+        dump.setSize(dumpdb.get().getSize());
+        dump.setCompany(company.get());
+        if(!dump.getSize().equals(null) && !dump.getStatusid().equals(null)){
             return repository.save(dump);
         }else{
             return null;

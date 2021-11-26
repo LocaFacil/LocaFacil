@@ -99,10 +99,4 @@ public class Client implements Serializable {
     public void addProfile(Profile profile) {
         profiles.add(profile.getCod());
     }
-
-    /*
-    public Set<Profile> getIdProfiles() {
-        return profiles.stream().map(x -> Profile.toEnum(x)).collect(Collectors.toSet());
-    }
-     */
 }
